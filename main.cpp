@@ -13,6 +13,7 @@
 #include <QtWidgets/qpushbutton.h>
 #include <QtWidgets/qlayout.h>
 #include <QtWidgets/qgroupbox.h>
+#include <QtWidgets/qtoolbutton.h>
 #include <QtGui/QResizeEvent>
 
 class EventFilter : public QObject {
@@ -91,8 +92,11 @@ int main(int argc, char *argv[])
     std::vector<QHBoxLayout*>sub_layouts;
     std::vector<QWidget*>Widgets;
     std::vector<std::vector<QPushButton*>>Widgets_buttons;
-    std::string image_paths[]{"ikony/menu_icon.png","ikony/leave_on_top.png","ikony/history.png"};
-    
+    std::string image_paths[]{"ikony/leave_on_top.png","ikony/history.png"};
+    //"ikony/menu_icon.png",
+
+
+
     QVBoxLayout *mainLayout = new QVBoxLayout(&mainWindow);
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0,0,0,0);
@@ -116,7 +120,11 @@ int main(int argc, char *argv[])
     }
     sub_layouts[1]->setAlignment(Qt::AlignRight);
         
-    Widgets_buttons.push_back({new QPushButton(""),new QPushButton("")});
+    Widgets_buttons.push_back({new QPushButton("")});
+    //,new QPushButton("")
+
+
+
     Widgets_buttons.push_back({new QPushButton("")});
     filter->setValues(Widgets_buttons[1].back(),splitter);
     int temp_value{};
@@ -130,9 +138,9 @@ int main(int argc, char *argv[])
             buttonArrayValue->setFixedWidth(60);
         }
     }
-    QObject::connect(Widgets_buttons[0][0],&QPushButton::clicked,[&](){
+    /*QObject::connect(Widgets_buttons[0][0],&QPushButton::clicked,[&](){
         QMessageBox::information(&mainWindow,"Kliknieto menu","Kilknieto menu");
-    });
+    });*/
 
 
     QLabel *label = new QLabel("Standardowy");
@@ -140,9 +148,14 @@ int main(int argc, char *argv[])
     label->setMargin(10);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
+    QToolButton* toolbar_menu = new QToolButton();
+    toolbar_menu->setFixedSize(60,60);
+    toolbar_menu->setObjectName("taskBarMenu");
+    toolbar_menu->setIcon(QIcon("ikony/menu_icon.png"));
+    sub_layouts[0]->addWidget(toolbar_menu);
     for(int i = 0; i < Widgets_buttons[0].size();i++)
     {
-        if(i==1)
+        if(i==Widgets_buttons[0].size()-1)
             sub_layouts[0]->addWidget(label);
         sub_layouts[0]->addWidget(Widgets_buttons[0][i]);
     }
