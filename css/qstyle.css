@@ -2,6 +2,13 @@ body {
     background-color: rgb(230, 233, 238);
     padding:2px;
 }
+#labeltext{
+    text-align: left;
+    padding:10px;
+    font-size:15px;
+    font-weight: bold;
+    color:grey;
+}
 #button {
     position: absolute;
     width:25%;

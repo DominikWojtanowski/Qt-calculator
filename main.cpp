@@ -14,6 +14,8 @@
 #include <QtWidgets/qlayout.h>
 #include <QtWidgets/qgroupbox.h>
 #include <QtWidgets/qtoolbutton.h>
+#include <QtWidgets/qmenu.h>
+#include <QtWidgets/qwidgetaction.h>
 #include <QtGui/QResizeEvent>
 
 class EventFilter : public QObject {
@@ -90,9 +92,12 @@ int main(int argc, char *argv[])
     mainWindow.setMinimumWidth(400);
     mainWindow.setWindowTitle("Kalkulator Qt");
     std::vector<QHBoxLayout*>sub_layouts;
+    std::vector<QWidgetAction* >menu_popup_actions;
+    std::vector<QLabel*>menu_popup_labels;
     std::vector<QWidget*>Widgets;
     std::vector<std::vector<QPushButton*>>Widgets_buttons;
     std::string image_paths[]{"ikony/leave_on_top.png","ikony/history.png"};
+    std::string label_texts[]{"Kalkulator","Konwerter"};
     //"ikony/menu_icon.png",
 
 
@@ -149,9 +154,30 @@ int main(int argc, char *argv[])
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
     QToolButton* toolbar_menu = new QToolButton();
+    QMenu* menu = new QMenu();
+    QWidgetAction* menu_label = new QWidgetAction(nullptr);
     toolbar_menu->setFixedSize(60,60);
     toolbar_menu->setObjectName("taskBarMenu");
     toolbar_menu->setIcon(QIcon("ikony/menu_icon.png"));
+    toolbar_menu->setPopupMode(QToolButton::InstantPopup);
+    toolbar_menu->setMenu(menu);
+    toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
+    for(const auto& text : label_texts)
+    {
+        menu_popup_labels.push_back(new QLabel(text.c_str()));
+        menu_popup_labels.back()->setObjectName("labeltext");
+        menu_popup_actions.push_back(new QWidgetAction(nullptr));
+        menu_popup_actions.back()->setDefaultWidget(menu_popup_labels.back());
+        menu->addAction(menu_popup_actions.back());
+        toolbar_menu->menu()->addAction("Opcja 1");
+        toolbar_menu->menu()->addAction("Opcja 2");
+        toolbar_menu->menu()->addAction("Opcja 3");
+    }
+    /*menu_label->setDefaultWidget(new QLabel("text"));
+    menu->addAction(menu_label);*/
+    
+
+    
     sub_layouts[0]->addWidget(toolbar_menu);
     for(int i = 0; i < Widgets_buttons[0].size();i++)
     {
