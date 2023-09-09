@@ -3,8 +3,18 @@ cmake_minimum_required(VERSION 3.0)
 project(Kalkulator)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
+
 set(CMAKE_PREFIX_PATH "C:/dev/vcpkg/installed/x64-windows/include/qt5")
-set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/ikony/kalkulatoricon.png")
-add_executable(Kalkulator main.cpp ${app_icon_resource_windows})
+set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/src/ikony/main_app/kalkulatoricon.png")
+add_executable(Kalkulator src/main.cpp ${app_icon_resource_windows})
+
+set(CLASS_SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilter.h
+)
+add_library(MyLibrary ${CLASS_SOURCE_FILES})
+target_include_directories(MyLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes)
+target_link_libraries(MyLibrary Qt5::Core Qt5::Widgets)
 
 target_link_libraries(Kalkulator PRIVATE Qt5::Core Qt5::Widgets)
+target_link_libraries(Kalkulator PRIVATE MyLibrary)

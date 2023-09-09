@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 #include <QtCore/qdebug.h>
 #include <QtCore/qcoreapplication.h>
@@ -17,59 +18,12 @@
 #include <QtWidgets/qmenu.h>
 #include <QtWidgets/qwidgetaction.h>
 #include <QtGui/QResizeEvent>
+#include "extra_classes/EventFilter.h"
 
-class EventFilter : public QObject {
-public:
-    EventFilter(QObject* parent = nullptr) : QObject{parent}, m_previousWidth{-1} {}
-    void setValues(QPushButton* button,QSplitter* splitter){m_history = button;m_splitter=splitter;}
-protected:
-    bool eventFilter(QObject* obj, QEvent* event) override {
-        if (event->type() == QEvent::Resize) {
-            QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
-            int newWidth = resizeEvent->size().width();
-            if(newWidth>=705 && newWidth<=800 && m_splitter->count()==3)
-                m_splitter->widget(2)->setFixedWidth(newWidth-390);
-                
-            if(m_splitter->count()==3)
-                m_splitter->widget(2)->setFixedHeight(resizeEvent->size().height());
-            if (m_previousWidth == -1) {
-                m_previousWidth = newWidth;
-            } else {
-                int widthDifference = newWidth - m_previousWidth;
-                if (widthDifference >= 15 || widthDifference <= -15) {
-                    // Wywołaj funkcję, gdy różnica wynosi co najmniej 15 pikseli
-                    if((newWidth-widthDifference)<700 && newWidth>=700) {
-                        QWidget* newWidget = new QWidget();
-                        newWidget->setFixedWidth(310);
-                        newWidget->setMaximumWidth(410);
-                        newWidget->setStyleSheet("border-left:1px solid black;");
-                        m_splitter->addWidget(newWidget);
-
-                        m_history->hide();
-                    }
-                    else if(!m_history->isVisible() && newWidth<700)
-                    {
-                        m_history->show();
-                        m_splitter->widget(2)->deleteLater();
-                    }
-                        
-                    m_previousWidth = newWidth;
-                    
-                }
-            }
-            
-        }
-
-        // Pozostałe obsługiwane zdarzenia
-        return false;
-    }
-
-private:
-    int m_previousWidth;
-    QPushButton* m_history = nullptr;
-    QSplitter* m_splitter = nullptr;
-};
-
+std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
+{
+    return std::make_pair(value1,value2);
+}
 
 int main(int argc, char *argv[])
 {
@@ -96,7 +50,16 @@ int main(int argc, char *argv[])
     std::vector<QLabel*>menu_popup_labels;
     std::vector<QWidget*>Widgets;
     std::vector<std::vector<QPushButton*>>Widgets_buttons;
-    std::string image_paths[]{"ikony/leave_on_top.png","ikony/history.png"};
+    std::vector<std::unordered_map<std::string,std::string>>menu_popup_labels_texts;
+    menu_popup_labels_texts.push_back(
+    {
+        {"src/ikony/pop_up_menu/calculator.png","Standardowy"},
+        {"src/ikony/pop_up_menu/scientific.png","Naukowy"},
+        {"src/ikony/pop_up_menu/graph.png","Tworzenie wykresow"},
+        {"src/ikony/pop_up_menu/programming.png","Programisty"},
+    });
+
+    std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
     std::string label_texts[]{"Kalkulator","Konwerter"};
     //"ikony/menu_icon.png",
 
@@ -158,10 +121,12 @@ int main(int argc, char *argv[])
     QWidgetAction* menu_label = new QWidgetAction(nullptr);
     toolbar_menu->setFixedSize(60,60);
     toolbar_menu->setObjectName("taskBarMenu");
-    toolbar_menu->setIcon(QIcon("ikony/menu_icon.png"));
+    toolbar_menu->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     toolbar_menu->setPopupMode(QToolButton::InstantPopup);
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
+    int value_temp{};
+    std::string temp_img{};
     for(const auto& text : label_texts)
     {
         menu_popup_labels.push_back(new QLabel(text.c_str()));
@@ -169,9 +134,15 @@ int main(int argc, char *argv[])
         menu_popup_actions.push_back(new QWidgetAction(nullptr));
         menu_popup_actions.back()->setDefaultWidget(menu_popup_labels.back());
         menu->addAction(menu_popup_actions.back());
-        toolbar_menu->menu()->addAction("Opcja 1");
-        toolbar_menu->menu()->addAction("Opcja 2");
-        toolbar_menu->menu()->addAction("Opcja 3");
+        if(value_temp<menu_popup_labels_texts.size())
+            for(const auto& One_map : menu_popup_labels_texts.at(value_temp))
+            {
+                QAction* new_Action = new QAction(QIcon(One_map.first.c_str()), One_map.second.c_str(),nullptr);
+                new_Action->setObjectName("actiontext");
+                toolbar_menu->menu()->addAction(new_Action);
+            }
+                
+        value_temp++;
     }
     /*menu_label->setDefaultWidget(new QLabel("text"));
     menu->addAction(menu_label);*/
@@ -191,7 +162,7 @@ int main(int argc, char *argv[])
 
     mainWindow.show();  // Wyświetlenie głównego okna
 
-    app.setWindowIcon(QIcon("ikony/kalkulatoricon.png"));
+    app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
 
     
     return app.exec();  // Rozpoczęcie głównej pętli aplikacji

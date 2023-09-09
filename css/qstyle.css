@@ -9,6 +9,15 @@ body {
     font-weight: bold;
     color:grey;
 }
+#actiontext
+{
+    padding:10px;
+    font-size: 15px;
+}
+#actiontext:hover
+{
+    background-color: #efefef;
+}
 #button {
     position: absolute;
     width:25%;
