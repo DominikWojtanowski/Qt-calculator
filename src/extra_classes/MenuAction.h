@@ -7,6 +7,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
+
 class MenuAction : public QWidgetAction {
     Q_OBJECT
 private:

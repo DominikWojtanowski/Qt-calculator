@@ -5,6 +5,12 @@ EventFilter::EventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1}
 
 bool EventFilter::eventFilter(QObject* obj, QEvent* event)
 {
+    if(event->type() == QEvent::WindowStateChange)
+    {
+        QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
+        if(m_splitter->count()==3)
+            m_splitter->widget(2)->setFixedHeight(resizeEvent->size().height());
+    }
     if (event->type() == QEvent::Resize) {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
         int newWidth = resizeEvent->size().width();
@@ -37,6 +43,7 @@ bool EventFilter::eventFilter(QObject* obj, QEvent* event)
         }
             
     }
+    
     return false;
 }
 

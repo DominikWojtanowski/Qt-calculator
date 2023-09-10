@@ -53,15 +53,30 @@ int main(int argc, char *argv[])
     std::vector<QWidget*>Widgets;
     std::vector<MenuAction*>actions;
     std::vector<std::vector<QPushButton*>>Widgets_buttons;
-    std::vector<std::unordered_map<std::string,std::string>>menu_popup_labels_texts;
+    std::vector<std::vector<std::pair<std::string,std::string>>>menu_popup_labels_texts;
     menu_popup_labels_texts.push_back(
     {
-        {"src/ikony/pop_up_menu/calculator.png","Standardowy"},
-        {"src/ikony/pop_up_menu/scientific.png","Naukowy"},
-        {"src/ikony/pop_up_menu/graph.png","Tworzenie wykresow"},
-        {"src/ikony/pop_up_menu/programming.png","Programisty"},
+        {"src/ikony/pop_up_menu/calculator.png","   Standardowy"}, // nie wiem dlaczego nie moge dac string(" ",3)??
+        {"src/ikony/pop_up_menu/scientific.png","   Naukowy"},
+        {"src/ikony/pop_up_menu/graph.png","   Tworzenie wykresow"},
+        {"src/ikony/pop_up_menu/programming.png","   Programisty"},
+        {"src/ikony/pop_up_menu/calendar.png","   Obliczanie daty"},
     });
-
+    menu_popup_labels_texts.push_back({
+        {"src/ikony/pop_up_menu/value.png","   Waluta"},
+        {"src/ikony/pop_up_menu/density.png","   Objętość"},
+        {"src/ikony/pop_up_menu/length.png","   Długość"},
+        {"src/ikony/pop_up_menu/weight.png","   Ciężar i masa"},  
+        {"src/ikony/pop_up_menu/temperature.png","   Temperatura"},  
+        {"src/ikony/pop_up_menu/energy.png","   Energia"},  
+        {"src/ikony/pop_up_menu/area.png","   Powierzchnia"},   
+        {"src/ikony/pop_up_menu/speed.png","   Prędkość"},   
+        {"src/ikony/pop_up_menu/time.png","   Czas"},   
+        {"src/ikony/pop_up_menu/energy.png","   Zasilanie"},
+        {"src/ikony/pop_up_menu/data.png","   Dane"}, 
+        {"src/ikony/pop_up_menu/cisnienie.png","   Ciśnienie"}, 
+        {"src/ikony/pop_up_menu/angle.png","   Kąt"},       
+    });
     std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
     std::string label_texts[]{"Kalkulator","Konwerter"};
     //"ikony/menu_icon.png",
@@ -116,7 +131,7 @@ int main(int argc, char *argv[])
 
     QLabel *label = new QLabel("Standardowy");
     label->setFixedSize(170,60);
-    label->setMargin(10);
+    label->setContentsMargins(10,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
     QToolButton* toolbar_menu = new QToolButton();
@@ -129,20 +144,18 @@ int main(int argc, char *argv[])
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
     int value_temp{};
-    std::string temp_img{};
     for(const auto& text : label_texts)
     {
-        menu_popup_labels.push_back(new QLabel(text.c_str()));
-        menu_popup_labels.back()->setObjectName("labeltext");
-        menu_popup_actions.push_back(new QWidgetAction(nullptr));
-        menu_popup_actions.back()->setDefaultWidget(menu_popup_labels.back());
+        actions.push_back(new MenuAction(nullptr,"menu_actions"));
+        actions.back()->Create_label(text.c_str());
+        menu_popup_actions.push_back(actions.back());
         menu->addAction(menu_popup_actions.back());
         if(value_temp<menu_popup_labels_texts.size())
             for(const auto& One_map : menu_popup_labels_texts.at(value_temp))
             {
-                QAction* new_Action = new QAction(QIcon(One_map.first.c_str()), One_map.second.c_str(),nullptr);
-                new_Action->setObjectName("actiontext");
-                toolbar_menu->menu()->addAction(new_Action);
+                actions.push_back(new MenuAction(nullptr,"menu_actions"));
+                actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str());
+                toolbar_menu->menu()->addAction(actions.back());
             }
                 
         value_temp++;

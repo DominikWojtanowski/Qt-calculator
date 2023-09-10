@@ -2,13 +2,6 @@ body {
     background-color: rgb(230, 233, 238);
     padding:2px;
 }
-#labeltext{
-    text-align: left;
-    padding:10px;
-    font-size:15px;
-    font-weight: bold;
-    color:rgb(88,88,88);
-}
 #button {
     position: absolute;
     width:25%;
@@ -29,6 +22,7 @@ body {
     background-color:#efefef;
     border:none;
     text-align: center;
+    margin: 4px;
 }
 #taskBarMenu:hover {
     background-color:#d7d7d7;
@@ -40,13 +34,22 @@ body {
 }
 #menu_actions
 {
+    border:none;
+    text-align: left;
+    background-color: #efefef;
     padding:10px;
-    margin: 2px;
+    margin-bottom: 7px;
 }
-#menu_actions:hover
+QLabel#menu_actions{
+    text-align: left;
+    padding:10px;
+    font-size:15px;
+    font-weight: bold;
+    color:rgb(88,88,88);
+}
+QPushButton#menu_actions:hover
 {
     background-color:#d7d7d7;
-    border-radius:10px;
 }
 QMainWindow::title {
     background-color: black;
