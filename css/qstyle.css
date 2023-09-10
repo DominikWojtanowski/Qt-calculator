@@ -7,16 +7,7 @@ body {
     padding:10px;
     font-size:15px;
     font-weight: bold;
-    color:grey;
-}
-#actiontext
-{
-    padding:10px;
-    font-size: 15px;
-}
-#actiontext:hover
-{
-    background-color: #efefef;
+    color:rgb(88,88,88);
 }
 #button {
     position: absolute;
@@ -37,6 +28,7 @@ body {
 #taskBarMenu {
     background-color:#efefef;
     border:none;
+    text-align: center;
 }
 #taskBarMenu:hover {
     background-color:#d7d7d7;
@@ -45,6 +37,16 @@ body {
 #mainWindow
 {
     color:black;
+}
+#menu_actions
+{
+    padding:10px;
+    margin: 2px;
+}
+#menu_actions:hover
+{
+    background-color:#d7d7d7;
+    border-radius:10px;
 }
 QMainWindow::title {
     background-color: black;

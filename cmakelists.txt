@@ -11,8 +11,14 @@ add_executable(Kalkulator src/main.cpp ${app_icon_resource_windows})
 set(CLASS_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuAction.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuAction.h
 )
-add_library(MyLibrary ${CLASS_SOURCE_FILES})
+
+# Włącz mechanizm mocowania dla klasy MenuAction
+qt5_wrap_cpp(MOC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuAction.h)
+
+add_library(MyLibrary ${CLASS_SOURCE_FILES} ${MOC_FILES})
 target_include_directories(MyLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes)
 target_link_libraries(MyLibrary Qt5::Core Qt5::Widgets)
 

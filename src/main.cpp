@@ -19,6 +19,7 @@
 #include <QtWidgets/qwidgetaction.h>
 #include <QtGui/QResizeEvent>
 #include "extra_classes/EventFilter.h"
+#include "extra_classes/MenuAction.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
@@ -27,6 +28,7 @@ std::pair<std::string, std::string> make_string_pair(const std::string& value1,c
 
 int main(int argc, char *argv[])
 {
+    MenuAction *menuAction = new MenuAction(nullptr);
     QApplication app(argc, argv);
     app.setStyleSheet("QApplication::title{background-color:black;}");
     QWidget mainWindow;
@@ -49,6 +51,7 @@ int main(int argc, char *argv[])
     std::vector<QWidgetAction* >menu_popup_actions;
     std::vector<QLabel*>menu_popup_labels;
     std::vector<QWidget*>Widgets;
+    std::vector<MenuAction*>actions;
     std::vector<std::vector<QPushButton*>>Widgets_buttons;
     std::vector<std::unordered_map<std::string,std::string>>menu_popup_labels_texts;
     menu_popup_labels_texts.push_back(
