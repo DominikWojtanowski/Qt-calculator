@@ -140,6 +140,7 @@ int main(int argc, char *argv[])
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
     int value_temp{};
+    int numbers{};
     for(const auto& text : label_texts)
     {
         actions.push_back(new MenuAction(nullptr,"menu_actions"));
@@ -150,7 +151,7 @@ int main(int argc, char *argv[])
             for(const auto& One_map : menu_popup_labels_texts.at(value_temp))
             {
                 actions.push_back(new MenuAction(nullptr,"menu_actions"));
-                actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str());
+                actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str(),numbers++);
                 toolbar_menu->menu()->addAction(actions.back());
             }
                 
@@ -175,12 +176,8 @@ int main(int argc, char *argv[])
 
         animation->start(QAbstractAnimation::DeleteWhenStopped);
     });
-
-    stackedWidget->addWidget(toolbar_menu);
-    stackedWidget->setCurrentWidget(toolbar_menu);
     
-
-    sub_layouts[0]->addWidget(stackedWidget);
+    sub_layouts[0]->addWidget(toolbar_menu);
     for(int i = 0; i < Widgets_buttons[0].size();i++)
     {
         if(i==Widgets_buttons[0].size()-1)

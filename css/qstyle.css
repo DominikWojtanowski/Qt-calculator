@@ -54,4 +54,8 @@ QPushButton#menu_actions:hover
 QMainWindow::title {
     background-color: black;
 }
+QMenu
+{
+    border-top-right-radius: 16px;
+}
 

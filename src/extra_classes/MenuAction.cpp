@@ -3,13 +3,13 @@
 
 MenuAction::MenuAction(QWidget* parent ,const QString& objectName) : QWidgetAction{parent}, m_objectName{objectName}, m_mainWindow{parent}
 {}
-void MenuAction::Create_button(const QString& button_text) {
-    m_menuButton = new MenuPushButton(button_text);
+void MenuAction::Create_button(const QString& button_text,int value) {
+    m_menuButton = new MenuPushButton(button_text,value);
     m_menuButton->setObjectName(m_objectName);
     this->setDefaultWidget(m_menuButton);
 }
-void MenuAction::Create_button_with_icon(const QIcon& icon,const QString& button_text) {
-    m_menuButton = new MenuPushButton(icon,button_text);
+void MenuAction::Create_button_with_icon(const QIcon& icon,const QString& button_text,int value) {
+    m_menuButton = new MenuPushButton(value,icon,button_text);
     m_menuButton->setObjectName(m_objectName);
     this->setDefaultWidget(m_menuButton);
 }

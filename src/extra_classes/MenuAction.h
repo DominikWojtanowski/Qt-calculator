@@ -19,8 +19,8 @@ private:
     QString m_objectName{};
 public:
     MenuAction(QWidget* = nullptr,const QString& = "");
-    void Create_button(const QString& = "");
-    void Create_button_with_icon(const QIcon&, const QString& = "");
+    void Create_button(const QString& = "",int = 0);
+    void Create_button_with_icon(const QIcon&, const QString& = "",int = 0);
     void Create_label(const QString& = "");
     // void Create_label_with_icon(const QIcon&, const QString& = ""); nie widze zeby bylo potrzebne
     void on_Clicked();
