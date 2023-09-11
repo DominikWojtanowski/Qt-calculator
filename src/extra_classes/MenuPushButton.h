@@ -3,6 +3,7 @@
 
 #include <QtCore/qobject.h>
 #include <QtCore/QEvent>
+#include <QtCore/qdebug.h>
 #include <QtWidgets/qwidget.h>
 #include <QtWidgets/qpushbutton.h>
 #include <QtWidgets/qsplitter.h>
@@ -14,14 +15,14 @@ class MenuPushButton : public QPushButton
 {
     Q_OBJECT
 private:
-    const QString& m_value{};
+    const std::string& m_value{};
     void OnClicked();
     QWidget* mainWindow;
 public:
-    MenuPushButton(const QString & = "");
-    MenuPushButton(QWidget *,const QString & = "");
-    MenuPushButton(const QString &,const QString & = "");
-    MenuPushButton(const QIcon &, const QString & = "",const QString & = "", QWidget * = nullptr);
+    MenuPushButton(const std::string& = "");
+    MenuPushButton(QWidget *,const std::string& = "");
+    MenuPushButton(const QString &,const std::string& = "");
+    MenuPushButton(const QIcon &, const QString & = "",const std::string& = "", QWidget * = nullptr);
     void onClicked();
 };
 
