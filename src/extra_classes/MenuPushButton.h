@@ -14,14 +14,14 @@ class MenuPushButton : public QPushButton
 {
     Q_OBJECT
 private:
-    int m_value{};
+    const QString& m_value{};
     void OnClicked();
     QWidget* mainWindow;
 public:
-    MenuPushButton(int);
-    MenuPushButton(QWidget *,int);
-    MenuPushButton(const QString &,int);
-    MenuPushButton(int, const QIcon &, const QString & = "", QWidget * = nullptr);
+    MenuPushButton(const QString & = "");
+    MenuPushButton(QWidget *,const QString & = "");
+    MenuPushButton(const QString &,const QString & = "");
+    MenuPushButton(const QIcon &, const QString & = "",const QString & = "", QWidget * = nullptr);
     void onClicked();
 };
 

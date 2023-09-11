@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
             for(const auto& One_map : menu_popup_labels_texts.at(value_temp))
             {
                 actions.push_back(new MenuAction(nullptr,"menu_actions"));
-                actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str(),numbers++);
+                actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str(),One_map.second.c_str());
                 toolbar_menu->menu()->addAction(actions.back());
             }
                 
