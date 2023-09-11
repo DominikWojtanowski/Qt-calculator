@@ -1,23 +1,18 @@
 #include <iostream>
-#include <unordered_map>
 #include <vector>
 #include <QtCore/qdebug.h>
 #include <QtCore/qcoreapplication.h>
-#include <QtCore/qobject.h>
 #include <QtCore/qfile.h>
 #include <QtCore/qtextstream.h>
 #include <QtCore/qtimer.h>
-#include <QtWidgets/qsplitter.h>
-#include <QtWidgets/qlabel.h>
+#include <QtWidgets/qstackedwidget.h>
+#include <QtWidgets/qscrollarea.h>
 #include <QtWidgets/qapplication.h>
-#include <QtWidgets/qmessagebox.h>
-#include <QtWidgets/qpushbutton.h>
 #include <QtWidgets/qlayout.h>
 #include <QtWidgets/qgroupbox.h>
 #include <QtWidgets/qtoolbutton.h>
 #include <QtWidgets/qmenu.h>
-#include <QtWidgets/qwidgetaction.h>
-#include <QtGui/QResizeEvent>
+#include <QtCore/qpropertyanimation.h>
 #include "extra_classes/EventFilter.h"
 #include "extra_classes/MenuAction.h"
 
@@ -134,13 +129,14 @@ int main(int argc, char *argv[])
     label->setContentsMargins(10,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
+    QStackedWidget *stackedWidget = new QStackedWidget();
     QToolButton* toolbar_menu = new QToolButton();
     QMenu* menu = new QMenu();
     QWidgetAction* menu_label = new QWidgetAction(nullptr);
     toolbar_menu->setFixedSize(60,60);
     toolbar_menu->setObjectName("taskBarMenu");
     toolbar_menu->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
-    toolbar_menu->setPopupMode(QToolButton::InstantPopup);
+    //toolbar_menu->setPopupMode(QToolButton::InstantPopup);
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
     int value_temp{};
@@ -164,8 +160,27 @@ int main(int argc, char *argv[])
     menu->addAction(menu_label);*/
     
 
+    QObject::connect(toolbar_menu,&QToolButton::clicked,toolbar_menu,[&](){
+        QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
+        pos.setY(40);
+        // Tworzenie niestandardowej animacji
+        QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
+        animation->setDuration(0);  // Ustaw czas trwania animacji na 500 ms (0,5 sekundy)
+        animation->setStartValue(QRect(pos, QSize(0, 0)));
+        animation->setEndValue(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
+
+        QObject::connect(animation, &QPropertyAnimation::finished, menu, [&](){
+            menu->exec();
+        });
+
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
+    });
+
+    stackedWidget->addWidget(toolbar_menu);
+    stackedWidget->setCurrentWidget(toolbar_menu);
     
-    sub_layouts[0]->addWidget(toolbar_menu);
+
+    sub_layouts[0]->addWidget(stackedWidget);
     for(int i = 0; i < Widgets_buttons[0].size();i++)
     {
         if(i==Widgets_buttons[0].size()-1)

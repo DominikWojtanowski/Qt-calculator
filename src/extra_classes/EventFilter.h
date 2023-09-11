@@ -6,7 +6,6 @@
 #include <QtWidgets/qpushbutton.h>
 #include <QtWidgets/qsplitter.h>
 #include <QtGui/QResizeEvent>
-#include <iostream>
 
 class EventFilter : public QObject
 {

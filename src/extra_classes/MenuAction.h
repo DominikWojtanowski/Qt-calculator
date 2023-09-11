@@ -6,12 +6,13 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
+#include "MenuPushButton.h"
 
 
 class MenuAction : public QWidgetAction {
     Q_OBJECT
 private:
-    QPushButton* m_menuButton = nullptr;
+    MenuPushButton* m_menuButton = nullptr;
     QLabel* m_menuLabel = nullptr;
     QIcon* m_menuIcon = nullptr;
     QWidget* m_mainWindow = nullptr;

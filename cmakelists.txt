@@ -13,10 +13,14 @@ set(CLASS_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuAction.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuAction.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuPushButton.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuPushButton.h
 )
 
 # Włącz mechanizm mocowania dla klasy MenuAction
-qt5_wrap_cpp(MOC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuAction.h)
+qt5_wrap_cpp(MOC_FILES 
+${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuAction.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuPushButton.h)
 
 add_library(MyLibrary ${CLASS_SOURCE_FILES} ${MOC_FILES})
 target_include_directories(MyLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes)
