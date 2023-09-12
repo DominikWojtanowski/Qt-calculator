@@ -157,9 +157,6 @@ int main(int argc, char *argv[])
                 
         value_temp++;
     }
-    /*menu_label->setDefaultWidget(new QLabel("text"));
-    menu->addAction(menu_label);*/
-    
 
     QObject::connect(toolbar_menu,&QToolButton::clicked,toolbar_menu,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
