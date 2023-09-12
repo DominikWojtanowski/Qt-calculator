@@ -160,18 +160,18 @@ int main(int argc, char *argv[])
 
     QObject::connect(toolbar_menu,&QToolButton::clicked,toolbar_menu,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
-        pos.setY(40);
         // Tworzenie niestandardowej animacji
         QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
-        animation->setDuration(0);  // Ustaw czas trwania animacji na 500 ms (0,5 sekundy)
-        animation->setStartValue(QRect(pos, QSize(0, 0)));
+        animation->setDuration(140);  // Ustaw czas trwania animacji na 500 ms (0,5 sekundy)
+        animation->setStartValue(QRect(pos, QSize(0, menu->sizeHint().height())));
         animation->setEndValue(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
 
         QObject::connect(animation, &QPropertyAnimation::finished, menu, [&](){
-            menu->exec();
+            std::cout << "Animacja zostala ukonczona" << std::endl;
         });
 
-        animation->start(QAbstractAnimation::DeleteWhenStopped);
+        animation->start();
+        menu->exec();
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);
