@@ -1,18 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <QtCore/qdebug.h>
-#include <QtCore/qcoreapplication.h>
-#include <QtCore/qfile.h>
-#include <QtCore/qtextstream.h>
-#include <QtCore/qtimer.h>
-#include <QtWidgets/qstackedwidget.h>
-#include <QtWidgets/qscrollarea.h>
-#include <QtWidgets/qapplication.h>
-#include <QtWidgets/qlayout.h>
-#include <QtWidgets/qgroupbox.h>
-#include <QtWidgets/qtoolbutton.h>
-#include <QtWidgets/qmenu.h>
-#include <QtCore/qpropertyanimation.h>
+#include <QtCore>
+#include <QtWidgets>
+#include <QtGui>
 #include "extra_classes/EventFilter.h"
 #include "extra_classes/MenuAction.h"
 
@@ -23,6 +13,7 @@ std::pair<std::string, std::string> make_string_pair(const std::string& value1,c
 
 int main(int argc, char *argv[])
 {
+    int menu_value{};
     MenuAction *menuAction = new MenuAction(nullptr);
     QApplication app(argc, argv);
     app.setStyleSheet("QApplication::title{background-color:black;}");
@@ -77,6 +68,7 @@ int main(int argc, char *argv[])
     //"ikony/menu_icon.png",
 
 
+    
 
     QVBoxLayout *mainLayout = new QVBoxLayout(&mainWindow);
     mainLayout->setSpacing(0);
@@ -86,11 +78,16 @@ int main(int argc, char *argv[])
     QSplitter *splitter = new QSplitter(Qt::Horizontal, &mainWindow);
     splitter->setHandleWidth(1);
 
+    
+
     //LEFT WIDGET
     Widgets.push_back(new QWidget());
     Widgets.back()->setFixedSize(270, 60);
     Widgets.push_back(new QWidget());
     Widgets.back()->setFixedHeight(60);
+
+    
+    
 
     for(const auto& Widget_one : Widgets)
     {
@@ -100,14 +97,20 @@ int main(int argc, char *argv[])
         splitter->addWidget(Widget_one);
     }
     sub_layouts[1]->setAlignment(Qt::AlignRight);
+
+    
         
-    Widgets_buttons.push_back({new QPushButton("")});
+    
+    Widgets_buttons.push_back({new QPushButton("",&mainWindow)});
+
+    
     //,new QPushButton("")
-
-
+    
 
     Widgets_buttons.push_back({new QPushButton("")});
     filter->setValues(Widgets_buttons[1].back(),splitter);
+
+    
     int temp_value{};
     for(const auto& buttonArray : Widgets_buttons)
     {
@@ -119,10 +122,13 @@ int main(int argc, char *argv[])
             buttonArrayValue->setFixedWidth(60);
         }
     }
+    
     /*QObject::connect(Widgets_buttons[0][0],&QPushButton::clicked,[&](){
         QMessageBox::information(&mainWindow,"Kliknieto menu","Kilknieto menu");
     });*/
 
+
+    
 
     QLabel *label = new QLabel("Standardowy");
     label->setFixedSize(170,60);
@@ -141,6 +147,7 @@ int main(int argc, char *argv[])
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
     int value_temp{};
     int numbers{};
+    
     for(const auto& text : label_texts)
     {
         actions.push_back(new MenuAction(nullptr,"menu_actions"));
@@ -158,20 +165,44 @@ int main(int argc, char *argv[])
         value_temp++;
     }
 
-    QObject::connect(toolbar_menu,&QToolButton::clicked,toolbar_menu,[&](){
+    QWidget* animationSpecialWidget = new QWidget(&mainWindow);
+    animationSpecialWidget->setVisible(false);
+    QPushButton* b1 = new QPushButton(&mainWindow);
+    b1->setAttribute(Qt::WA_StyledBackground, false);
+    b1->setObjectName("taskBarMenu");
+    b1->setFixedSize(60,60);
+    b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
+    animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 14px;");
+    //sub_layouts[0]->addWidget(animationWidget);
+    QObject::connect(b1,&QToolButton::clicked,b1,[&](){
+        b1->setStyleSheet("background-color:rgb(231,231,231);");
+        animationSpecialWidget->setVisible(true);
+        toolbar_menu->raise();
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
+        pos.setY(pos.y());
         // Tworzenie niestandardowej animacji
         QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
+        QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
+        QRect startSize(pos, QSize(0, menu->sizeHint().height()));
+        QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
         animation->setDuration(140);  // Ustaw czas trwania animacji na 500 ms (0,5 sekundy)
-        animation->setStartValue(QRect(pos, QSize(0, menu->sizeHint().height())));
-        animation->setEndValue(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
+        animation->setStartValue(startSize);
+        animation->setEndValue(endSize);
+        
+        animation2->setDuration(140);
+        animation2->setStartValue(QRect(0, 0, 0, 60)); // Rozmiar początkowy
+        animation2->setEndValue(QRect(0, 0, 318, 60));
 
         QObject::connect(animation, &QPropertyAnimation::finished, menu, [&](){
             std::cout << "Animacja zostala ukonczona" << std::endl;
         });
 
+
+        
         animation->start();
+        animation2->start();
         menu->exec();
+        
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);
