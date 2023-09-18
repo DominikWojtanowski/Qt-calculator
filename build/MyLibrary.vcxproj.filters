@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\src\extra_classes\EventFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\src\extra_classes\MenuAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\src\extra_classes\MenuPushButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\src\extra_classes\SpecialButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\build\src\extra_classes\moc_MenuAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\build\src\extra_classes\moc_MenuPushButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\build\src\extra_classes\moc_SpecialButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\pc\Desktop\maybe\src\extra_classes\EventFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\pc\Desktop\maybe\src\extra_classes\MenuAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\pc\Desktop\maybe\src\extra_classes\MenuPushButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\pc\Desktop\maybe\src\extra_classes\SpecialButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\pc\Desktop\maybe\build\CMakeFiles\1e808383c62382429c46c020b47d33fe\moc_MenuAction.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\pc\Desktop\maybe\build\CMakeFiles\1e808383c62382429c46c020b47d33fe\moc_MenuPushButton.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\pc\Desktop\maybe\build\CMakeFiles\1e808383c62382429c46c020b47d33fe\moc_SpecialButton.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\pc\Desktop\maybe\cmakelists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C88DC0B5-9171-336C-B349-5F500F66A0D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{38E9269C-25B0-3889-AFD5-5287AF0FCBCC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{116BC82C-F614-3E14-970A-B97CC18CC64E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

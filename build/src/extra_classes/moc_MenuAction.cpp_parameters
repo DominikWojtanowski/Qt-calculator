@@ -1,0 +1,5 @@
+-DWIN32
+--compiler-flavor=msvc
+-o
+C:/Users/pc/Desktop/maybe/build/src/extra_classes/moc_MenuAction.cpp
+C:/Users/pc/Desktop/maybe/src/extra_classes/MenuAction.h

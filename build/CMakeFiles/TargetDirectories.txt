@@ -1,0 +1,4 @@
+C:/Users/pc/Desktop/maybe/build/CMakeFiles/Kalkulator.dir
+C:/Users/pc/Desktop/maybe/build/CMakeFiles/MyLibrary.dir
+C:/Users/pc/Desktop/maybe/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/pc/Desktop/maybe/build/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,52 @@
+^C:\USERS\PC\DESKTOP\MAYBE\BUILD\CMAKEFILES\1E808383C62382429C46C020B47D33FE\MOC_MENUACTION.CPP.RULE
+setlocal
+cd C:\Users\pc\Desktop\maybe\build\src\extra_classes
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+C:\dev\vcpkg\installed\x64-windows\tools\qt5\bin\moc.exe @C:/Users/pc/Desktop/maybe/build/src/extra_classes/moc_MenuAction.cpp_parameters
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PC\DESKTOP\MAYBE\BUILD\CMAKEFILES\1E808383C62382429C46C020B47D33FE\MOC_MENUPUSHBUTTON.CPP.RULE
+setlocal
+cd C:\Users\pc\Desktop\maybe\build\src\extra_classes
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+C:\dev\vcpkg\installed\x64-windows\tools\qt5\bin\moc.exe @C:/Users/pc/Desktop/maybe/build/src/extra_classes/moc_MenuPushButton.cpp_parameters
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PC\DESKTOP\MAYBE\BUILD\CMAKEFILES\1E808383C62382429C46C020B47D33FE\MOC_SPECIALBUTTON.CPP.RULE
+setlocal
+cd C:\Users\pc\Desktop\maybe\build\src\extra_classes
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+C:\dev\vcpkg\installed\x64-windows\tools\qt5\bin\moc.exe @C:/Users/pc/Desktop/maybe/build/src/extra_classes/moc_SpecialButton.cpp_parameters
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PC\DESKTOP\MAYBE\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/pc/Desktop/maybe -BC:/Users/pc/Desktop/maybe/build --check-stamp-file C:/Users/pc/Desktop/maybe/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
