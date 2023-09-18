@@ -5,6 +5,7 @@
 #include <QtGui>
 #include "extra_classes/EventFilter.h"
 #include "extra_classes/MenuAction.h"
+#include "extra_classes/SpecialButton.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
@@ -19,7 +20,7 @@ int main(int argc, char *argv[])
     app.setStyleSheet("QApplication::title{background-color:black;}");
     QWidget mainWindow;
     EventFilter *filter = new EventFilter; 
-    mainWindow.installEventFilter(filter);
+    //mainWindow.installEventFilter(filter);
     QString styleSheetPath("css/qstyle.css");
     QFile styleSheetFile(styleSheetPath);
     if (styleSheetFile.open(QFile::ReadOnly | QFile::Text)) {
@@ -67,9 +68,6 @@ int main(int argc, char *argv[])
     std::string label_texts[]{"Kalkulator","Konwerter"};
     //"ikony/menu_icon.png",
 
-
-    
-
     QVBoxLayout *mainLayout = new QVBoxLayout(&mainWindow);
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0,0,0,0);
@@ -78,16 +76,11 @@ int main(int argc, char *argv[])
     QSplitter *splitter = new QSplitter(Qt::Horizontal, &mainWindow);
     splitter->setHandleWidth(1);
 
-    
-
     //LEFT WIDGET
     Widgets.push_back(new QWidget());
     Widgets.back()->setFixedSize(270, 60);
     Widgets.push_back(new QWidget());
     Widgets.back()->setFixedHeight(60);
-
-    
-    
 
     for(const auto& Widget_one : Widgets)
     {
@@ -97,20 +90,11 @@ int main(int argc, char *argv[])
         splitter->addWidget(Widget_one);
     }
     sub_layouts[1]->setAlignment(Qt::AlignRight);
-
-    
-        
-    
-    Widgets_buttons.push_back({new QPushButton("",&mainWindow)});
-
-    
-    //,new QPushButton("")
-    
+    Widgets_buttons.push_back({new QPushButton("")});
 
     Widgets_buttons.push_back({new QPushButton("")});
     filter->setValues(Widgets_buttons[1].back(),splitter);
 
-    
     int temp_value{};
     for(const auto& buttonArray : Widgets_buttons)
     {
@@ -123,21 +107,13 @@ int main(int argc, char *argv[])
         }
     }
     
-    /*QObject::connect(Widgets_buttons[0][0],&QPushButton::clicked,[&](){
-        QMessageBox::information(&mainWindow,"Kliknieto menu","Kilknieto menu");
-    });*/
-
-
-    
-
     QLabel *label = new QLabel("Standardowy");
     label->setFixedSize(170,60);
     label->setContentsMargins(10,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
-    QStackedWidget *stackedWidget = new QStackedWidget();
     QToolButton* toolbar_menu = new QToolButton();
-    QMenu* menu = new QMenu();
+    QMenu* menu = new QMenu(toolbar_menu);
     QWidgetAction* menu_label = new QWidgetAction(nullptr);
     toolbar_menu->setFixedSize(60,60);
     toolbar_menu->setObjectName("taskBarMenu");
@@ -148,6 +124,7 @@ int main(int argc, char *argv[])
     int value_temp{};
     int numbers{};
     
+    //menu->installEventFilter(new EventFilter);
     for(const auto& text : label_texts)
     {
         actions.push_back(new MenuAction(nullptr,"menu_actions"));
@@ -161,23 +138,25 @@ int main(int argc, char *argv[])
                 actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str(),One_map.second.c_str());
                 toolbar_menu->menu()->addAction(actions.back());
             }
-                
         value_temp++;
     }
 
     QWidget* animationSpecialWidget = new QWidget(&mainWindow);
     animationSpecialWidget->setVisible(false);
-    QPushButton* b1 = new QPushButton(&mainWindow);
+    SpecialButton* b1 = new SpecialButton(&mainWindow);
     b1->setAttribute(Qt::WA_StyledBackground, false);
     b1->setObjectName("taskBarMenu");
     b1->setFixedSize(60,60);
     b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 14px;");
-    //sub_layouts[0]->addWidget(animationWidget);
+    
     QObject::connect(b1,&QToolButton::clicked,b1,[&](){
-        b1->setStyleSheet("background-color:rgb(231,231,231);");
+        menu->installEventFilter(filter);
+        b1->setStyleSheet("QPushButton:hover{background-color:#d7d7d7;border-radius:10px;} QPushButton{background-color:rgb(231,231,231);}");
+        b1->setMouseTracking(true);
+        // Dodawanie akcji do menu
         animationSpecialWidget->setVisible(true);
-        toolbar_menu->raise();
+        
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
         // Tworzenie niestandardowej animacji
@@ -197,12 +176,9 @@ int main(int argc, char *argv[])
             std::cout << "Animacja zostala ukonczona" << std::endl;
         });
 
-
-        
         animation->start();
         animation2->start();
         menu->exec();
-        
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);
