@@ -6,6 +6,7 @@
 #include "extra_classes/EventFilter.h"
 #include "extra_classes/MenuAction.h"
 #include "extra_classes/SpecialButton.h"
+#include "extra_classes/MenuButtonEventFilter.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
@@ -20,7 +21,7 @@ int main(int argc, char *argv[])
     app.setStyleSheet("QApplication::title{background-color:black;}");
     QWidget mainWindow;
     EventFilter *filter = new EventFilter; 
-    //mainWindow.installEventFilter(filter);
+    mainWindow.installEventFilter(filter);
     QString styleSheetPath("css/qstyle.css");
     QFile styleSheetFile(styleSheetPath);
     if (styleSheetFile.open(QFile::ReadOnly | QFile::Text)) {
@@ -151,7 +152,9 @@ int main(int argc, char *argv[])
     animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 14px;");
     
     QObject::connect(b1,&QToolButton::clicked,b1,[&](){
-        menu->installEventFilter(filter);
+        MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter();
+        specialFilter->setValues(b1);
+        menu->installEventFilter(specialFilter);
         b1->setStyleSheet("QPushButton:hover{background-color:#d7d7d7;border-radius:10px;} QPushButton{background-color:rgb(231,231,231);}");
         b1->setMouseTracking(true);
         // Dodawanie akcji do menu

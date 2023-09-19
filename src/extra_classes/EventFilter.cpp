@@ -5,8 +5,7 @@ EventFilter::EventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1}
 
 bool EventFilter::eventFilter(QObject* obj, QEvent* event)
 {
-    std::cout << event->type() << std::endl;
-    /*if(event->type() == QEvent::WindowStateChange)
+    if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
         if(m_splitter->count()==3)
@@ -41,10 +40,8 @@ bool EventFilter::eventFilter(QObject* obj, QEvent* event)
                 }
                 m_previousWidth = newWidth;     
             }
-        }
-            
-    }*/
-    
+        }       
+    }
     return false;
 }
 

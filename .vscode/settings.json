@@ -78,6 +78,8 @@
         "qresizeevent": "cpp",
         "qicon": "cpp",
         "qmessagebox": "cpp",
-        "qtgui": "cpp"
+        "qtgui": "cpp",
+        "coroutine": "cpp",
+        "resumable": "cpp"
     }
 }

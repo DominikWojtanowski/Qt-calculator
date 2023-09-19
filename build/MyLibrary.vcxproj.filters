@@ -13,6 +13,9 @@
     <ClCompile Include="C:\Users\pc\Desktop\maybe\src\extra_classes\SpecialButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\src\extra_classes\MenuButtonEventFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\pc\Desktop\maybe\build\src\extra_classes\moc_MenuAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -20,6 +23,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\pc\Desktop\maybe\build\src\extra_classes\moc_SpecialButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\pc\Desktop\maybe\build\src\extra_classes\moc_MenuButtonEventFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,6 +42,9 @@
     <ClInclude Include="C:\Users\pc\Desktop\maybe\src\extra_classes\SpecialButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="C:\Users\pc\Desktop\maybe\src\extra_classes\MenuButtonEventFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\pc\Desktop\maybe\build\CMakeFiles\1e808383c62382429c46c020b47d33fe\moc_MenuAction.cpp.rule">
@@ -45,6 +54,9 @@
       <Filter>CMake Rules</Filter>
     </CustomBuild>
     <CustomBuild Include="C:\Users\pc\Desktop\maybe\build\CMakeFiles\1e808383c62382429c46c020b47d33fe\moc_SpecialButton.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\pc\Desktop\maybe\build\CMakeFiles\1e808383c62382429c46c020b47d33fe\moc_MenuButtonEventFilter.cpp.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
     <CustomBuild Include="C:\Users\pc\Desktop\maybe\cmakelists.txt" />
