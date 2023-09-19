@@ -43,6 +43,8 @@ QToolButton:hover{
     background-color: rgb(231,231,231);
     padding:10px;
     margin-bottom: 7px;
+    font-size: 20px;
+    font-weight: lighter;
 }
 QLabel#menu_actions{
     text-align: left;
@@ -62,4 +64,5 @@ QMenu{
 QMainWindow::title {
     background-color: black;
 }
+
 
