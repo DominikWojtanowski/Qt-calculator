@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
     } else {
         qDebug() << "Nie mozna otworzyc pliku stylu.";
     }
-    mainWindow.setGeometry(0,0,400,630);
-    mainWindow.setMinimumHeight(630);
+    mainWindow.setGeometry(0,0,400,588);
+    mainWindow.setMinimumHeight(588);
     mainWindow.setMinimumWidth(400);
     mainWindow.setWindowTitle("Kalkulator Qt");
     std::vector<QHBoxLayout*>sub_layouts;
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     b1->setObjectName("taskBarMenu");
     b1->setFixedSize(60,60);
     b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
-    animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 14px;");
+    animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 17px;");
     
     QObject::connect(b1,&QToolButton::clicked,b1,[&](){
         MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter();
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
         QObject::connect(animation, &QPropertyAnimation::finished, menu, [&](){
             std::cout << "Animacja zostala ukonczona" << std::endl;
         });
-
+        menu->setFixedHeight(mainWindow.size().height()-128);
         animation->start();
         animation2->start();
         menu->exec();

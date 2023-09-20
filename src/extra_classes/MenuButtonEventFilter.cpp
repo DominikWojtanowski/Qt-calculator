@@ -21,7 +21,7 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
         }
         else
         {
-            m_history->setStyleSheet("QPushButton{background-color:rgb(231,231,231);border:none;text-align: center;margin: 4px;}");
+            m_history->setStyleSheet("QPushButton:hover{background-color:#d7d7d7;border-radius:10px;} QPushButton{background-color:rgb(231,231,231);border:none;text-align: center;margin: 4px;}");
             wasChanged = false;
         }       
     }
