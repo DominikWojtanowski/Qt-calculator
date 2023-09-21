@@ -154,35 +154,58 @@ int main(int argc, char *argv[])
     b1->setFixedSize(60,60);
     b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 17px;");
+
+    QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
+    QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
+
+    QRect secondStartSize(QRect(0, 0, 0, 60));
+    QRect secondEndSize(QRect(0, 0, 317, 60));
+
     QObject::connect(b1,&QToolButton::clicked,b1,[&](){
+        QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
+        pos.setY(pos.y());
+        QRect startSize(pos, QSize(0, menu->sizeHint().height()));
+        QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
+
         MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter();
         specialFilter->setValues(b1);
         menu->installEventFilter(specialFilter);
-        b1->setStyleSheet("QPushButton:hover{background-color:#d7d7d7;border-radius:10px;} QPushButton{background-color:rgb(231,231,231);}");
-        animationSpecialWidget->setVisible(true);
         
-        QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
-        pos.setY(pos.y());
-        // Tworzenie niestandardowej animacji
-        QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
-        QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
-        QRect startSize(pos, QSize(0, menu->sizeHint().height()));
-        QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
-        animation->setDuration(140);  // Ustaw czas trwania animacji na 500 ms (0,5 sekundy)
-        animation->setStartValue(startSize);
-        animation->setEndValue(endSize);
-        
-        animation2->setDuration(140);
-        animation2->setStartValue(QRect(0, 0, 0, 60)); // Rozmiar początkowy
-        animation2->setEndValue(QRect(0, 0, 317, 60));
+          
+        if(!show)
+        {
+            show = true;
+            animationSpecialWidget->setVisible(true);
 
-        QObject::connect(animation, &QPropertyAnimation::finished, menu, [&](){
-            std::cout << "Animacja zostala ukonczona" << std::endl;
-        });
-        menu->setFixedHeight(mainWindow.size().height()-128);
-        animation->start();
-        animation2->start();
-        menu->exec();
+            animation->setDuration(140);
+            animation->setStartValue(startSize);
+            animation->setEndValue(endSize);
+
+            animation2->setDuration(140);
+            animation2->setStartValue(secondStartSize); // Rozmiar początkowy
+            animation2->setEndValue(secondEndSize);
+
+            menu->setFixedHeight(mainWindow.size().height()-128);
+            animation->start();
+            animation2->start();
+            menu->exec();
+        }
+        else
+        {
+            show = false;
+
+            animation->setDuration(240);
+            animation->setStartValue(endSize);
+            animation->setEndValue(startSize);
+
+            animation2->setDuration(140);
+            animation2->setStartValue(secondEndSize); // Rozmiar początkowy
+            animation2->setEndValue(secondStartSize);
+
+            animation->start();
+            animation2->start();
+            menu->exec();
+        }
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);

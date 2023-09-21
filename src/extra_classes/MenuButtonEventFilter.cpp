@@ -28,10 +28,12 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
     return false;
 }
 
-
-
-
 void MenuButtonEventFilter::setValues(QPushButton* button)
 {
     m_history = button;
+}
+
+void MenuButtonEventFilter::deleteAll()
+{
+    m_history = nullptr;
 }

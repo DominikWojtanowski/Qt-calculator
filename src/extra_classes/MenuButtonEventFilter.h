@@ -13,6 +13,7 @@ class MenuButtonEventFilter : public QObject
 public:
     MenuButtonEventFilter(QObject* = nullptr);
     void setValues(QPushButton*);
+    void deleteAll();
 protected:
     bool eventFilter(QObject*, QEvent*) override;
 private:
