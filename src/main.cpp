@@ -7,6 +7,7 @@
 #include "extra_classes/MenuAction.h"
 #include "extra_classes/SpecialButton.h"
 #include "extra_classes/MenuButtonEventFilter.h"
+#include "extra_classes/Shadow_Widget.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
@@ -35,6 +36,7 @@ int main(int argc, char *argv[])
     mainWindow.setMinimumHeight(588);
     mainWindow.setMinimumWidth(400);
     mainWindow.setWindowTitle("Kalkulator Qt");
+    bool show = false;
     std::vector<QHBoxLayout*>sub_layouts;
     std::vector<QWidgetAction* >menu_popup_actions;
     std::vector<QLabel*>menu_popup_labels;
@@ -68,6 +70,11 @@ int main(int argc, char *argv[])
     std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
     std::string label_texts[]{"Kalkulator","Konwerter"};
     //"ikony/menu_icon.png",
+
+    QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect;
+    shadowEffect->setBlurRadius(5); // Ustawienie promienia rozmycia cienia
+    shadowEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
+    shadowEffect->setOffset(2, 7);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(&mainWindow);
     mainLayout->setSpacing(0);
@@ -119,13 +126,11 @@ int main(int argc, char *argv[])
     toolbar_menu->setFixedSize(60,60);
     toolbar_menu->setObjectName("taskBarMenu");
     toolbar_menu->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
-    //toolbar_menu->setPopupMode(QToolButton::InstantPopup);
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
     int value_temp{};
     int numbers{};
     
-    //menu->installEventFilter(new EventFilter);
     for(const auto& text : label_texts)
     {
         actions.push_back(new MenuAction(nullptr,"menu_actions"));
@@ -142,22 +147,18 @@ int main(int argc, char *argv[])
         value_temp++;
     }
 
-    QWidget* animationSpecialWidget = new QWidget(&mainWindow);
+    Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
     animationSpecialWidget->setVisible(false);
     SpecialButton* b1 = new SpecialButton(&mainWindow);
-    b1->setAttribute(Qt::WA_StyledBackground, false);
     b1->setObjectName("taskBarMenu");
     b1->setFixedSize(60,60);
     b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 17px;");
-    
     QObject::connect(b1,&QToolButton::clicked,b1,[&](){
         MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter();
         specialFilter->setValues(b1);
         menu->installEventFilter(specialFilter);
         b1->setStyleSheet("QPushButton:hover{background-color:#d7d7d7;border-radius:10px;} QPushButton{background-color:rgb(231,231,231);}");
-        b1->setMouseTracking(true);
-        // Dodawanie akcji do menu
         animationSpecialWidget->setVisible(true);
         
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
@@ -173,7 +174,7 @@ int main(int argc, char *argv[])
         
         animation2->setDuration(140);
         animation2->setStartValue(QRect(0, 0, 0, 60)); // Rozmiar początkowy
-        animation2->setEndValue(QRect(0, 0, 318, 60));
+        animation2->setEndValue(QRect(0, 0, 317, 60));
 
         QObject::connect(animation, &QPropertyAnimation::finished, menu, [&](){
             std::cout << "Animacja zostala ukonczona" << std::endl;

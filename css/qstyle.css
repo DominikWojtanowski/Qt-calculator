@@ -43,13 +43,13 @@ QToolButton:hover{
     background-color: rgb(231,231,231);
     padding:10px;
     margin-bottom: 7px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: lighter;
 }
 QLabel#menu_actions{
     text-align: left;
     padding:10px;
-    font-size:15px;
+    font-size:16px;
     font-weight: bold;
     color:rgb(88,88,88);
 }
