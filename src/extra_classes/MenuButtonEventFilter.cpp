@@ -1,10 +1,12 @@
 #include "MenuButtonEventFilter.h"
 
-MenuButtonEventFilter::MenuButtonEventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1} 
+MenuButtonEventFilter::MenuButtonEventFilter(QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1} 
 {}
 
 bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {
+    std::cout << event->type() << std::endl;
+    
     if(event->type() == QEvent::MouseMove || event->type() == QEvent::Resize)
     {
         QMouseEvent* Event = reinterpret_cast<QMouseEvent*>(event);
@@ -24,6 +26,12 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
             m_history->setStyleSheet("QPushButton:hover{background-color:#d7d7d7;border-radius:10px;} QPushButton{background-color:rgb(231,231,231);border:none;text-align: center;margin: 4px;}");
             wasChanged = false;
         }       
+    }
+    else if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick ||  
+    event->type() == QEvent::MouseButtonRelease ) {
+        // Obsługuje kliknięcie myszą
+            QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+            return true;
     }
     return false;
 }

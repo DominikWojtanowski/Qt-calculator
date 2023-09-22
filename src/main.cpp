@@ -161,19 +161,22 @@ int main(int argc, char *argv[])
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
+    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter();
+    specialFilter->setValues(b1);
+
     QObject::connect(b1,&QToolButton::clicked,b1,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
 
-        MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter();
-        specialFilter->setValues(b1);
-        menu->installEventFilter(specialFilter);
+        
+        
         
           
         if(!show)
         {
+            menu->installEventFilter(specialFilter);
             show = true;
             animationSpecialWidget->setVisible(true);
 
@@ -192,6 +195,8 @@ int main(int argc, char *argv[])
         }
         else
         {
+            b1->setObjectName("taskBarMenu");
+            menu->removeEventFilter(specialFilter);
             show = false;
 
             animation->setDuration(240);
@@ -204,7 +209,6 @@ int main(int argc, char *argv[])
 
             animation->start();
             animation2->start();
-            menu->exec();
         }
     });
     

@@ -4,6 +4,7 @@
 #include <QtCore/qobject.h>
 #include <QtCore/QEvent>
 #include <QtWidgets/qpushbutton.h>
+#include <QtWidgets/qmenu.h>
 #include <QtWidgets/qsplitter.h>
 #include <QtGui/QResizeEvent>
 #include <iostream>
@@ -11,7 +12,7 @@
 class MenuButtonEventFilter : public QObject
 {
 public:
-    MenuButtonEventFilter(QObject* = nullptr);
+    MenuButtonEventFilter(QObject* = nullptr,QMenu* = nullptr);
     void setValues(QPushButton*);
     void deleteAll();
 protected:
@@ -20,6 +21,7 @@ private:
     bool wasChanged = false;
     int m_previousWidth;
     QPushButton* m_history = nullptr;
+    QMenu* m_menu = nullptr;
 };
 
 #endif // MENU_BUTTON_EVENT_FILTER_H
