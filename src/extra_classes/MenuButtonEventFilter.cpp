@@ -31,6 +31,8 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
     event->type() == QEvent::MouseButtonRelease ) {
         // Obsługuje kliknięcie myszą
             QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+            if(mouseEvent->pos().x() > 317 )
+                return false;
             return true;
     }
     return false;

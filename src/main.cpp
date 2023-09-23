@@ -71,10 +71,15 @@ int main(int argc, char *argv[])
     std::string label_texts[]{"Kalkulator","Konwerter"};
     //"ikony/menu_icon.png",
 
+
     QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect;
     shadowEffect->setBlurRadius(5); // Ustawienie promienia rozmycia cienia
     shadowEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
     shadowEffect->setOffset(2, 7);
+    QGraphicsDropShadowEffect* nextEffect = new QGraphicsDropShadowEffect();
+    nextEffect->setBlurRadius(5); // Ustawienie promienia rozmycia cienia
+    nextEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
+    nextEffect->setOffset(2, 2);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(&mainWindow);
     mainLayout->setSpacing(0);
@@ -121,7 +126,7 @@ int main(int argc, char *argv[])
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
     QToolButton* toolbar_menu = new QToolButton();
-    QMenu* menu = new QMenu(toolbar_menu);
+    QMenu* menu = new QMenu(/*toolbar_menu*/);
     QWidgetAction* menu_label = new QWidgetAction(nullptr);
     toolbar_menu->setFixedSize(60,60);
     toolbar_menu->setObjectName("taskBarMenu");
@@ -155,6 +160,17 @@ int main(int argc, char *argv[])
     b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 17px;");
 
+    std::cout << mainWindow.height()-60 << std::endl;
+
+    QWidget* Settings = new QWidget(&mainWindow);
+    Settings->setFixedSize(317,70);
+    Settings->setStyleSheet("background-color:rgb(231,231,231); border-bottom-right-radius:17px; border-top: 1px solid rgb(217,219,220);");
+    Settings->hide();
+    
+    Settings->setGraphicsEffect(nextEffect);
+
+    //QVBoxLayout* menuLayout = new QVBoxLayout(&mainWindow); - jak skoncze podstawowy kalkulator to poprawie te szystkie layouty
+
     QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
 
@@ -169,11 +185,6 @@ int main(int argc, char *argv[])
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
-
-        
-        
-        
-          
         if(!show)
         {
             menu->installEventFilter(specialFilter);
@@ -191,7 +202,12 @@ int main(int argc, char *argv[])
             menu->setFixedHeight(mainWindow.size().height()-128);
             animation->start();
             animation2->start();
+            
+            Settings->setGeometry(0,518,0,0);
+            Settings->show();
             menu->exec();
+            
+            
         }
         else
         {
@@ -209,6 +225,7 @@ int main(int argc, char *argv[])
 
             animation->start();
             animation2->start();
+            Settings->hide();
         }
     });
     

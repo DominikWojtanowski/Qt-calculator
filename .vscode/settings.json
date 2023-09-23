@@ -80,6 +80,7 @@
         "qmessagebox": "cpp",
         "qtgui": "cpp",
         "coroutine": "cpp",
-        "resumable": "cpp"
+        "resumable": "cpp",
+        "qtwidgets": "cpp"
     }
 }
