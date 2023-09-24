@@ -64,5 +64,10 @@ QMenu{
 QMainWindow::title {
     background-color: black;
 }
+#test
+{
+    background-color: black;
+    color: white;
+}
 
 

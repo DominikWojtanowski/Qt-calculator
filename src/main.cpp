@@ -3,11 +3,16 @@
 #include <QtCore>
 #include <QtWidgets>
 #include <QtGui>
-#include "extra_classes/EventFilter.h"
-#include "extra_classes/MenuAction.h"
-#include "extra_classes/SpecialButton.h"
-#include "extra_classes/MenuButtonEventFilter.h"
-#include "extra_classes/Shadow_Widget.h"
+//ENUMS
+
+#include "extra_classes/Language/h/Language.h"
+
+//MY CLASSES
+#include "extra_classes/EventFilters/h/EventFilter.h"
+#include "extra_classes/EventFilters/h/MenuButtonEventFilter.h"
+#include "extra_classes/WidgetClasses/h/Shadow_Widget.h"
+#include "extra_classes/MenuClasses/h/MenuAction.h"
+#include "extra_classes/ButtonClasses/h/SpecialButton.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
@@ -16,27 +21,9 @@ std::pair<std::string, std::string> make_string_pair(const std::string& value1,c
 
 int main(int argc, char *argv[])
 {
-    int menu_value{};
-    MenuAction *menuAction = new MenuAction(nullptr);
-    QApplication app(argc, argv);
-    app.setStyleSheet("QApplication::title{background-color:black;}");
-    QWidget mainWindow;
-    EventFilter *filter = new EventFilter; 
-    mainWindow.installEventFilter(filter);
-    QString styleSheetPath("css/qstyle.css");
-    QFile styleSheetFile(styleSheetPath);
-    if (styleSheetFile.open(QFile::ReadOnly | QFile::Text)) {
-        QString styleSheetContent = QTextStream(&styleSheetFile).readAll();
-        app.setStyleSheet(styleSheetContent);
-        styleSheetFile.close();
-    } else {
-        qDebug() << "Nie mozna otworzyc pliku stylu.";
-    }
-    mainWindow.setGeometry(0,0,400,588);
-    mainWindow.setMinimumHeight(588);
-    mainWindow.setMinimumWidth(400);
-    mainWindow.setWindowTitle("Kalkulator Qt");
+    std::cout << Languages::getLanguage() << std::endl;
     bool show = false;
+    int menu_value{},which_icon_index{},which_actions_index{};
     std::vector<QHBoxLayout*>sub_layouts;
     std::vector<QWidgetAction* >menu_popup_actions;
     std::vector<QLabel*>menu_popup_labels;
@@ -69,9 +56,30 @@ int main(int argc, char *argv[])
     });
     std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
     std::string label_texts[]{"Kalkulator","Konwerter"};
-    //"ikony/menu_icon.png",
+    
+    QApplication app(argc, argv);
+    app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
+    QWidget mainWindow;
+    QString styleSheetPath("css/qstyle.css");
+    QFile styleSheetFile(styleSheetPath);
+    if (styleSheetFile.open(QFile::ReadOnly | QFile::Text)) {
+        QString styleSheetContent = QTextStream(&styleSheetFile).readAll();
+        app.setStyleSheet(styleSheetContent);
+        styleSheetFile.close();
+    } else {
+        qDebug() << "Nie mozna otworzyc pliku stylu.";
+    }
+    EventFilter *filter = new EventFilter;
+    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(); 
+    
 
-
+    mainWindow.installEventFilter(filter);
+    
+    mainWindow.setGeometry(0,0,400,588);
+    mainWindow.setMinimumHeight(588);
+    mainWindow.setMinimumWidth(400);
+    mainWindow.setWindowTitle("Kalkulator Qt");
+    
     QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect;
     shadowEffect->setBlurRadius(5); // Ustawienie promienia rozmycia cienia
     shadowEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
@@ -81,7 +89,12 @@ int main(int argc, char *argv[])
     nextEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
     nextEffect->setOffset(2, 2);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(&mainWindow);
+    QVBoxLayout *masterLayout = new QVBoxLayout(&mainWindow);
+    masterLayout->setSpacing(0);
+    masterLayout->setContentsMargins(0,0,0,0);
+    masterLayout->setAlignment(Qt::AlignTop);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0,0,0,0);
     mainLayout->setAlignment(Qt::AlignTop);
@@ -108,12 +121,12 @@ int main(int argc, char *argv[])
     Widgets_buttons.push_back({new QPushButton("")});
     filter->setValues(Widgets_buttons[1].back(),splitter);
 
-    int temp_value{};
+    
     for(const auto& buttonArray : Widgets_buttons)
     {
         for(const auto& buttonArrayValue : buttonArray)
         {
-            buttonArrayValue->setIcon(QIcon(image_paths[temp_value++].c_str()));
+            buttonArrayValue->setIcon(QIcon(image_paths[which_icon_index++].c_str()));
             buttonArrayValue->setObjectName("taskBarMenu");
             buttonArrayValue->setFixedHeight(60);
             buttonArrayValue->setFixedWidth(60);
@@ -133,8 +146,6 @@ int main(int argc, char *argv[])
     toolbar_menu->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
-    int value_temp{};
-    int numbers{};
     
     for(const auto& text : label_texts)
     {
@@ -142,14 +153,14 @@ int main(int argc, char *argv[])
         actions.back()->Create_label(text.c_str());
         menu_popup_actions.push_back(actions.back());
         menu->addAction(menu_popup_actions.back());
-        if(value_temp<menu_popup_labels_texts.size())
-            for(const auto& One_map : menu_popup_labels_texts.at(value_temp))
+        if(which_actions_index<menu_popup_labels_texts.size())
+            for(const auto& One_map : menu_popup_labels_texts.at(which_actions_index))
             {
                 actions.push_back(new MenuAction(nullptr,"menu_actions"));
                 actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str(),One_map.second.c_str());
                 toolbar_menu->menu()->addAction(actions.back());
             }
-        value_temp++;
+        which_actions_index++;
     }
 
     Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
@@ -160,14 +171,19 @@ int main(int argc, char *argv[])
     b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 17px;");
 
-    std::cout << mainWindow.height()-60 << std::endl;
-
     QWidget* Settings = new QWidget(&mainWindow);
     Settings->setFixedSize(317,70);
     Settings->setStyleSheet("background-color:rgb(231,231,231); border-bottom-right-radius:17px; border-top: 1px solid rgb(217,219,220);");
+    Settings->setGraphicsEffect(nextEffect);
+    QPushButton l1(QIcon("src/ikony/main_app/Settings.png"),"   Ustawienia",Settings);
+    l1.setFixedSize(317,70);
+    l1.setStyleSheet("padding-left:10px;text-align:left;color:white;margin:5px;margin-top:25px;margin-left:0px;background-color:black;border-top-right-radius:13px;border-bottom-right-radius:13px;");
+    l1.show();
     Settings->hide();
     
-    Settings->setGraphicsEffect(nextEffect);
+
+
+
 
     //QVBoxLayout* menuLayout = new QVBoxLayout(&mainWindow); - jak skoncze podstawowy kalkulator to poprawie te szystkie layouty
 
@@ -177,9 +193,7 @@ int main(int argc, char *argv[])
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
-    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter();
     specialFilter->setValues(b1);
-
     QObject::connect(b1,&QToolButton::clicked,b1,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
@@ -237,13 +251,10 @@ int main(int argc, char *argv[])
         sub_layouts[0]->addWidget(Widgets_buttons[0][i]);
     }
     sub_layouts[1]->addWidget(Widgets_buttons.back().back()); // Nalepsza linijka mojego kodu xD
-        
+    
     mainLayout->addWidget(splitter);
-
+    masterLayout->addLayout(mainLayout);
     mainWindow.show();  // Wyświetlenie głównego okna
 
-    app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
-
-    
     return app.exec();  // Rozpoczęcie głównej pętli aplikacji
 }

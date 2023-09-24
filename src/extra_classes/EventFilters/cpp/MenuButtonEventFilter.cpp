@@ -1,4 +1,4 @@
-#include "MenuButtonEventFilter.h"
+#include "EventFilters/h/MenuButtonEventFilter.h"
 
 MenuButtonEventFilter::MenuButtonEventFilter(QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1} 
 {}

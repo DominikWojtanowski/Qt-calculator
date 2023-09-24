@@ -1,4 +1,4 @@
-#include "EventFilter.h"
+#include "EventFilters/h/EventFilter.h"
 
 EventFilter::EventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1} 
 {}
