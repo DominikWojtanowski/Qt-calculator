@@ -6,7 +6,7 @@
 
 class Languages
 {
-    static enum languages {
+    enum languages {
        ENGLISH,
        GERMAN,
        SPANISH,

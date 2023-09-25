@@ -165,26 +165,22 @@ int main(int argc, char *argv[])
 
     Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
     animationSpecialWidget->setVisible(false);
-    SpecialButton* b1 = new SpecialButton(&mainWindow);
-    b1->setObjectName("taskBarMenu");
-    b1->setFixedSize(60,60);
-    b1->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
-    animationSpecialWidget->setStyleSheet("background-color:rgb(231,231,231);border-top-right-radius: 17px;");
+    SpecialButton* UpMenuButton = new SpecialButton(&mainWindow);
+    UpMenuButton->setObjectName("taskBarMenu");
+    UpMenuButton->setFixedSize(60,60);
+    UpMenuButton->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
+    animationSpecialWidget->setObjectName("animationWidgetTop");
 
     QWidget* Settings = new QWidget(&mainWindow);
     Settings->setFixedSize(317,70);
-    Settings->setStyleSheet("background-color:rgb(231,231,231); border-bottom-right-radius:17px; border-top: 1px solid rgb(217,219,220);");
+    Settings->setObjectName("animationWidgetBottom");
     Settings->setGraphicsEffect(nextEffect);
-    QPushButton l1(QIcon("src/ikony/main_app/Settings.png"),"   Ustawienia",Settings);
-    l1.setFixedSize(317,70);
-    l1.setStyleSheet("padding-left:10px;text-align:left;color:white;margin:5px;margin-top:25px;margin-left:0px;background-color:black;border-top-right-radius:13px;border-bottom-right-radius:13px;");
-    l1.show();
+    QPushButton* DownMenuButton = new QPushButton(QIcon("src/ikony/main_app/Settings.png"),"   Ustawienia",Settings);
+    DownMenuButton->setObjectName("animationWidgetBottom");
+    DownMenuButton->setFixedSize(317,70);
+    DownMenuButton->show();
     Settings->hide();
     
-
-
-
-
     //QVBoxLayout* menuLayout = new QVBoxLayout(&mainWindow); - jak skoncze podstawowy kalkulator to poprawie te szystkie layouty
 
     QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
@@ -193,8 +189,8 @@ int main(int argc, char *argv[])
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
-    specialFilter->setValues(b1);
-    QObject::connect(b1,&QToolButton::clicked,b1,[&](){
+    specialFilter->setValues(UpMenuButton,DownMenuButton);
+    QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
@@ -216,16 +212,16 @@ int main(int argc, char *argv[])
             menu->setFixedHeight(mainWindow.size().height()-128);
             animation->start();
             animation2->start();
-            
-            Settings->setGeometry(0,518,0,0);
+
+            Settings->setGeometry(0,mainWindow.height()-70,0,0);
             Settings->show();
-            menu->exec();
-            
-            
+            menu->exec();  
         }
         else
         {
-            b1->setObjectName("taskBarMenu");
+            UpMenuButton->style()->unpolish(UpMenuButton);
+            UpMenuButton->setObjectName("taskBarMenu");
+            UpMenuButton->style()->polish(UpMenuButton);
             menu->removeEventFilter(specialFilter);
             show = false;
 
