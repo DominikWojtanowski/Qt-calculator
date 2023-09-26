@@ -138,6 +138,8 @@ int main(int argc, char *argv[])
     label->setContentsMargins(10,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
+    
+
     QToolButton* toolbar_menu = new QToolButton();
     QMenu* menu = new QMenu(/*toolbar_menu*/);
     QWidgetAction* menu_label = new QWidgetAction(nullptr);
@@ -147,6 +149,7 @@ int main(int argc, char *argv[])
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
     
+
     for(const auto& text : label_texts)
     {
         actions.push_back(new MenuAction(nullptr,"menu_actions"));
@@ -172,24 +175,31 @@ int main(int argc, char *argv[])
     animationSpecialWidget->setObjectName("animationWidgetTop");
 
     QWidget* Settings = new QWidget(&mainWindow);
-    Settings->setFixedSize(317,70);
+    //Settings->setFixedSize(317,70);
     Settings->setObjectName("animationWidgetBottom");
     Settings->setGraphicsEffect(nextEffect);
     QPushButton* DownMenuButton = new QPushButton(QIcon("src/ikony/main_app/Settings.png"),"   Ustawienia",Settings);
     DownMenuButton->setObjectName("animationWidgetBottom");
     DownMenuButton->setFixedSize(317,70);
     DownMenuButton->show();
-    Settings->hide();
+    Settings->setVisible(false);
     
     //QVBoxLayout* menuLayout = new QVBoxLayout(&mainWindow); - jak skoncze podstawowy kalkulator to poprawie te szystkie layouty
 
     QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
+    QPropertyAnimation *animation3 = new QPropertyAnimation(Settings, "geometry");
 
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
+    QRect thirdStartSize(QRect(0, mainWindow.height()-70, 0, 70));
+    QRect thirdEndSize(QRect(0, mainWindow.height()-70, 317, 70));
+
+    //Settings->setGeometry(0,mainWindow.height()-70,0,0);
+
     specialFilter->setValues(UpMenuButton,DownMenuButton);
+    specialFilter->setWidgets(animationSpecialWidget,Settings);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
@@ -198,8 +208,8 @@ int main(int argc, char *argv[])
         if(!show)
         {
             menu->installEventFilter(specialFilter);
-            show = true;
             animationSpecialWidget->setVisible(true);
+            Settings->setVisible(true);
 
             animation->setDuration(140);
             animation->setStartValue(startSize);
@@ -209,13 +219,17 @@ int main(int argc, char *argv[])
             animation2->setStartValue(secondStartSize); // Rozmiar początkowy
             animation2->setEndValue(secondEndSize);
 
+            animation3->setDuration(140);
+            animation3->setStartValue(thirdStartSize); // Rozmiar początkowy
+            animation3->setEndValue(thirdEndSize);
+
+
             menu->setFixedHeight(mainWindow.size().height()-128);
             animation->start();
             animation2->start();
+            animation3->start();
 
-            Settings->setGeometry(0,mainWindow.height()-70,0,0);
-            Settings->show();
-            menu->exec();  
+            menu->exec();
         }
         else
         {
@@ -223,20 +237,20 @@ int main(int argc, char *argv[])
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
             menu->removeEventFilter(specialFilter);
-            show = false;
 
-            animation->setDuration(240);
+            animation->setDuration(50);
             animation->setStartValue(endSize);
             animation->setEndValue(startSize);
 
-            animation2->setDuration(140);
+            animation2->setDuration(50);
             animation2->setStartValue(secondEndSize); // Rozmiar początkowy
             animation2->setEndValue(secondStartSize);
 
-            animation->start();
-            animation2->start();
+            animationSpecialWidget->hide();
             Settings->hide();
+            menu->hide();
         }
+        show = !show;
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);

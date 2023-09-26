@@ -16,6 +16,7 @@ class MenuButtonEventFilter : public QObject
 public:
     MenuButtonEventFilter(QObject* = nullptr,QMenu* = nullptr);
     void setValues(QPushButton*,QPushButton*);
+    void setWidgets(QWidget*, QWidget*);
     void deleteAll();
 protected:
     bool eventFilter(QObject*, QEvent*) override;
@@ -26,6 +27,7 @@ private:
     QPushButton* m_menuButton_top = nullptr;
     QPushButton* m_menuButton_bottom = nullptr;
     QMenu* m_menu = nullptr;
+    std::vector<QWidget*>widgets{nullptr,nullptr};
 };
 
 #endif // MENU_BUTTON_EVENT_FILTER_H

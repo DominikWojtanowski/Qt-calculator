@@ -8,6 +8,11 @@ void MenuButtonEventFilter::setButtonStyle(QPushButton* buttonToSet,int option,c
     option == 1 ? buttonToSet->setObjectName(OneName) : buttonToSet->setObjectName(SecondName);
     buttonToSet->style()->polish(buttonToSet);
 }
+void MenuButtonEventFilter::setWidgets(QWidget* TopWidget, QWidget* DownWidget)
+{
+    widgets[0] = TopWidget;
+    widgets[1] = DownWidget;
+}
 bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {   
     if(event->type() == QEvent::MouseMove || event->type() == QEvent::Resize)
@@ -50,11 +55,15 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
     event->type() == QEvent::MouseButtonRelease ) {
         // Obsługuje kliknięcie myszą
             QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-            std::cout << mouseEvent->pos().x() << ", " << mouseEvent->pos().y() << std::endl;
             if(mouseEvent->pos().x() > 317 || (((mouseEvent->pos().x()>=3 && mouseEvent->pos().x()<=55 && 
             mouseEvent->pos().y()<=-3 && mouseEvent->pos().y()>=-55) || (mouseEvent->pos().x() == 0 && mouseEvent->pos().y() == 0))))
             {
                 wasChangedTop = false;
+                if(m_menuButton_top->isVisible())
+                {
+                    widgets[0]->hide();
+                    widgets[1]->hide();
+                }
                 return false;
             }    
             return true;
