@@ -149,7 +149,6 @@ int main(int argc, char *argv[])
     toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
     
-
     for(const auto& text : label_texts)
     {
         actions.push_back(new MenuAction(nullptr,"menu_actions"));
@@ -205,6 +204,8 @@ int main(int argc, char *argv[])
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
+        if(Settings->isHidden())
+            show = false;
         if(!show)
         {
             menu->installEventFilter(specialFilter);

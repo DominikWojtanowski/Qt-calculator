@@ -12,9 +12,20 @@ void MenuButtonEventFilter::setWidgets(QWidget* TopWidget, QWidget* DownWidget)
 {
     widgets[0] = TopWidget;
     widgets[1] = DownWidget;
+    
 }
 bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {   
+    qDebug() << event->type();
+    if(event->type() == QEvent::Hide)
+    {
+        wasChangedTop = false;
+        widgets[0]->hide();
+        widgets[1]->hide();
+        m_menuButton_top->style()->unpolish(m_menuButton_top);
+        m_menuButton_top->setObjectName("taskBarMenu");
+        m_menuButton_top->style()->polish(m_menuButton_top);
+    }
     if(event->type() == QEvent::MouseMove || event->type() == QEvent::Resize)
     {
         QMouseEvent* Event = reinterpret_cast<QMouseEvent*>(event);
