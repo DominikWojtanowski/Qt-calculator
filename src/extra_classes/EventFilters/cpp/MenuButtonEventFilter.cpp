@@ -1,6 +1,6 @@
 #include "EventFilters/h/MenuButtonEventFilter.h"
 
-MenuButtonEventFilter::MenuButtonEventFilter(QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1} 
+MenuButtonEventFilter::MenuButtonEventFilter(bool& Value,QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1}, m_showValue{Value} 
 {}
 void MenuButtonEventFilter::setButtonStyle(QPushButton* buttonToSet,int option,const QString& OneName = "Activated", const QString& SecondName = "Deactivated")
 {
@@ -14,6 +14,10 @@ void MenuButtonEventFilter::setWidgets(QWidget* TopWidget, QWidget* DownWidget)
     widgets[1] = DownWidget;
     
 }
+void MenuButtonEventFilter::setBool(bool& value)
+{
+    //m_show = value;
+}
 bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {   
     if(event->type() == QEvent::Hide)
@@ -24,6 +28,7 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
         m_menuButton_top->style()->unpolish(m_menuButton_top);
         m_menuButton_top->setObjectName("taskBarMenu");
         m_menuButton_top->style()->polish(m_menuButton_top);
+        m_showValue = !m_showValue;
     }
     if(event->type() == QEvent::MouseMove || event->type() == QEvent::Resize)
     {
@@ -73,6 +78,7 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
                 {
                     widgets[0]->hide();
                     widgets[1]->hide();
+                    
                 }
                 return false;
             }    

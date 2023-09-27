@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
         qDebug() << "Nie mozna otworzyc pliku stylu.";
     }
     EventFilter *filter = new EventFilter;
-    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(); 
+    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(show); 
     
 
     mainWindow.installEventFilter(filter);
@@ -199,13 +199,14 @@ int main(int argc, char *argv[])
 
     specialFilter->setValues(UpMenuButton,DownMenuButton);
     specialFilter->setWidgets(animationSpecialWidget,Settings);
+    //specialFilter->setBool(show);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
+        std::cout << std::boolalpha << show << std::endl;
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
-        if(Settings->isHidden() && show == true)
-            show = false;
+        
         if(!show)
         {
             menu->installEventFilter(specialFilter);
