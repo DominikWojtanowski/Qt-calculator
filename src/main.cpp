@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
-        if(Settings->isHidden())
+        if(Settings->isHidden() && show == true)
             show = false;
         if(!show)
         {

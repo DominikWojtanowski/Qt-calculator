@@ -16,7 +16,6 @@ void MenuButtonEventFilter::setWidgets(QWidget* TopWidget, QWidget* DownWidget)
 }
 bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {   
-    qDebug() << event->type();
     if(event->type() == QEvent::Hide)
     {
         wasChangedTop = false;
