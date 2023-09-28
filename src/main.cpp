@@ -206,8 +206,10 @@ int main(int argc, char *argv[])
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
+        std::cout << std::boolalpha << "Show: " << show << std::endl;
         if(!show)
         {
+            show = true;
             menu->installEventFilter(specialFilter);
             animationSpecialWidget->setVisible(true);
             Settings->setVisible(true);
@@ -231,9 +233,11 @@ int main(int argc, char *argv[])
             animation3->start();
 
             menu->exec();
+            
         }
         else
         {
+            show = false;
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
@@ -252,7 +256,7 @@ int main(int argc, char *argv[])
             menu->hide();
             
         }
-        show = !show;
+       
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);

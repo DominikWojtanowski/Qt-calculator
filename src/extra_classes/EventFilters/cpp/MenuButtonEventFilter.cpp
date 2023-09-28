@@ -28,7 +28,6 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
         m_menuButton_top->style()->unpolish(m_menuButton_top);
         m_menuButton_top->setObjectName("taskBarMenu");
         m_menuButton_top->style()->polish(m_menuButton_top);
-        m_showValue = !m_showValue;
     }
     if(event->type() == QEvent::MouseMove || event->type() == QEvent::Resize)
     {
@@ -71,7 +70,11 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
         // Obsługuje kliknięcie myszą
             QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
             if(mouseEvent->pos().x() > 317)
-                m_showValue = true;
+            {
+                std::cout << "???" << std::endl;
+                m_showValue = false;
+            }
+                
             if(mouseEvent->pos().x() > 317 || (((mouseEvent->pos().x()>=3 && mouseEvent->pos().x()<=55 && 
             mouseEvent->pos().y()<=-3 && mouseEvent->pos().y()>=-55) || (mouseEvent->pos().x() == 0 && mouseEvent->pos().y() == 0))))
             {
