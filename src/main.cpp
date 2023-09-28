@@ -200,16 +200,15 @@ int main(int argc, char *argv[])
     specialFilter->setValues(UpMenuButton,DownMenuButton);
     specialFilter->setWidgets(animationSpecialWidget,Settings);
     //specialFilter->setBool(show);
+    menu->setMinimumHeight(0);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
-        std::cout << std::boolalpha << show << std::endl;
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
-        std::cout << std::boolalpha << "Show: " << show << std::endl;
-        if(!show)
+        std::cout << Settings->minimumHeight() << std::endl;
+        if(Settings->minimumHeight()==0)
         {
-            show = true;
             menu->installEventFilter(specialFilter);
             animationSpecialWidget->setVisible(true);
             Settings->setVisible(true);
@@ -228,6 +227,7 @@ int main(int argc, char *argv[])
 
 
             menu->setFixedHeight(mainWindow.size().height()-128);
+            Settings->setMinimumHeight(1);
             animation->start();
             animation2->start();
             animation3->start();
@@ -237,7 +237,6 @@ int main(int argc, char *argv[])
         }
         else
         {
-            show = false;
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
@@ -251,9 +250,11 @@ int main(int argc, char *argv[])
             animation2->setStartValue(secondEndSize); // Rozmiar początkowy
             animation2->setEndValue(secondStartSize);
 
+            Settings->setMinimumHeight(0);
             animationSpecialWidget->hide();
             Settings->hide();
             menu->hide();
+            
             
         }
        

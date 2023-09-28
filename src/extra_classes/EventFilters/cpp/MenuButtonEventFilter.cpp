@@ -70,10 +70,8 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
         // Obsługuje kliknięcie myszą
             QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
             if(mouseEvent->pos().x() > 317)
-            {
-                std::cout << "???" << std::endl;
-                m_showValue = false;
-            }
+                widgets[1]->setMinimumHeight(0);
+                
                 
             if(mouseEvent->pos().x() > 317 || (((mouseEvent->pos().x()>=3 && mouseEvent->pos().x()<=55 && 
             mouseEvent->pos().y()<=-3 && mouseEvent->pos().y()>=-55) || (mouseEvent->pos().x() == 0 && mouseEvent->pos().y() == 0))))
