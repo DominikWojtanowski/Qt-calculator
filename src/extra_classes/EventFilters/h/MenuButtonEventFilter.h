@@ -17,6 +17,7 @@ public:
     MenuButtonEventFilter(bool&,QObject* = nullptr,QMenu* = nullptr);
     void setValues(QPushButton*,QPushButton*);
     void setWidgets(QWidget*, QWidget*);
+    void setBool(bool& value);
     void deleteAll();
 protected:
     bool eventFilter(QObject*, QEvent*) override;

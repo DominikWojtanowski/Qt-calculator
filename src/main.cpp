@@ -199,14 +199,15 @@ int main(int argc, char *argv[])
 
     specialFilter->setValues(UpMenuButton,DownMenuButton);
     specialFilter->setWidgets(animationSpecialWidget,Settings);
+    //specialFilter->setBool(show);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
+        std::cout << std::boolalpha << show << std::endl;
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
         if(!show)
         {
-            std::cout << "Pos1" << std::endl;
             menu->installEventFilter(specialFilter);
             animationSpecialWidget->setVisible(true);
             Settings->setVisible(true);
@@ -233,7 +234,6 @@ int main(int argc, char *argv[])
         }
         else
         {
-            std::cout << "Pos2" << std::endl;
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
