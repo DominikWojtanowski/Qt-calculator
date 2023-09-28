@@ -9,9 +9,17 @@ class Shadow_Widget : public QWidget
 {
 private:
     QGraphicsDropShadowEffect* m_effect;
+    bool& m_show;
+protected:
+    void hideEvent(QHideEvent *event) override {
+       
+    }
+    void showEvent(QShowEvent *event) override {
+        
+    }
 public:
-    Shadow_Widget(QGraphicsDropShadowEffect* );
-    Shadow_Widget(QGraphicsDropShadowEffect* ,QWidget* );
+    Shadow_Widget(QGraphicsDropShadowEffect* ,bool&);
+    Shadow_Widget(QGraphicsDropShadowEffect* ,QWidget*,bool&);
 };
 
 

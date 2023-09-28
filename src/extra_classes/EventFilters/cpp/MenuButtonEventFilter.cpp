@@ -1,6 +1,6 @@
 #include "EventFilters/h/MenuButtonEventFilter.h"
 
-MenuButtonEventFilter::MenuButtonEventFilter(QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1} 
+MenuButtonEventFilter::MenuButtonEventFilter(bool& Value,QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1}, m_showValue{Value} 
 {}
 void MenuButtonEventFilter::setButtonStyle(QPushButton* buttonToSet,int option,const QString& OneName = "Activated", const QString& SecondName = "Deactivated")
 {
@@ -16,7 +16,6 @@ void MenuButtonEventFilter::setWidgets(QWidget* TopWidget, QWidget* DownWidget)
 }
 bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {   
-    qDebug() << event->type();
     if(event->type() == QEvent::Hide)
     {
         wasChangedTop = false;
@@ -66,6 +65,8 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
     event->type() == QEvent::MouseButtonRelease ) {
         // Obsługuje kliknięcie myszą
             QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+            if(mouseEvent->pos().x() > 317)
+                m_showValue = true;
             if(mouseEvent->pos().x() > 317 || (((mouseEvent->pos().x()>=3 && mouseEvent->pos().x()<=55 && 
             mouseEvent->pos().y()<=-3 && mouseEvent->pos().y()>=-55) || (mouseEvent->pos().x() == 0 && mouseEvent->pos().y() == 0))))
             {

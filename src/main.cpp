@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
         qDebug() << "Nie mozna otworzyc pliku stylu.";
     }
     EventFilter *filter = new EventFilter;
-    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(); 
+    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(show); 
     
 
     mainWindow.installEventFilter(filter);
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
         which_actions_index++;
     }
 
-    Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
+    Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow,show);
     animationSpecialWidget->setVisible(false);
     SpecialButton* UpMenuButton = new SpecialButton(&mainWindow);
     UpMenuButton->setObjectName("taskBarMenu");
@@ -204,10 +204,9 @@ int main(int argc, char *argv[])
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
-        if(Settings->isHidden())
-            show = false;
         if(!show)
         {
+            std::cout << "Pos1" << std::endl;
             menu->installEventFilter(specialFilter);
             animationSpecialWidget->setVisible(true);
             Settings->setVisible(true);
@@ -234,6 +233,7 @@ int main(int argc, char *argv[])
         }
         else
         {
+            std::cout << "Pos2" << std::endl;
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
@@ -250,6 +250,7 @@ int main(int argc, char *argv[])
             animationSpecialWidget->hide();
             Settings->hide();
             menu->hide();
+            
         }
         show = !show;
     });
