@@ -1,6 +1,6 @@
 #include "EventFilters/h/MenuButtonEventFilter.h"
 
-MenuButtonEventFilter::MenuButtonEventFilter(bool& Value,QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1}, m_showValue{Value} 
+MenuButtonEventFilter::MenuButtonEventFilter(QObject* parent, QMenu* menu) : QObject{parent}, m_menu{menu}, m_previousWidth{-1}
 {}
 void MenuButtonEventFilter::setButtonStyle(QPushButton* buttonToSet,int option,const QString& OneName = "Activated", const QString& SecondName = "Deactivated")
 {
@@ -14,12 +14,14 @@ void MenuButtonEventFilter::setWidgets(QWidget* TopWidget, QWidget* DownWidget)
     widgets[1] = DownWidget;
     
 }
-void MenuButtonEventFilter::setBool(bool& value)
-{
-    //m_show = value;
-}
 bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {   
+    //qDebug() << event->type();
+    if(event->type() == QEvent::MouseButtonDblClick)
+    {
+        if(widgets[1]->minimumHeight()!=0)
+            widgets[1]->setMinimumHeight(0);
+    }
     if(event->type() == QEvent::Hide)
     {
         wasChangedTop = false;
@@ -77,12 +79,8 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
             mouseEvent->pos().y()<=-3 && mouseEvent->pos().y()>=-55) || (mouseEvent->pos().x() == 0 && mouseEvent->pos().y() == 0))))
             {
                 wasChangedTop = false;
-                if(m_menuButton_top->isVisible())
-                {
-                    widgets[0]->hide();
-                    widgets[1]->hide();
-                    
-                }
+                widgets[0]->hide();
+                widgets[1]->hide();
                 return false;
             }    
             return true;

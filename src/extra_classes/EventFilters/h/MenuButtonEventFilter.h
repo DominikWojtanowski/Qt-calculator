@@ -14,16 +14,14 @@
 class MenuButtonEventFilter : public QObject
 {
 public:
-    MenuButtonEventFilter(bool&,QObject* = nullptr,QMenu* = nullptr);
+    MenuButtonEventFilter(QObject* = nullptr,QMenu* = nullptr);
     void setValues(QPushButton*,QPushButton*);
     void setWidgets(QWidget*, QWidget*);
-    void setBool(bool& value);
     void deleteAll();
 protected:
     bool eventFilter(QObject*, QEvent*) override;
     void setButtonStyle(QPushButton*,int,const QString&,const QString&);
 private:
-    bool& m_showValue;
     bool wasChangedTop = false,wasChangedBottom = false;
     int m_previousWidth,option;
     QPushButton* m_menuButton_top = nullptr;

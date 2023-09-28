@@ -21,8 +21,6 @@ std::pair<std::string, std::string> make_string_pair(const std::string& value1,c
 
 int main(int argc, char *argv[])
 {
-    std::cout << Languages::getLanguage() << std::endl;
-    bool show = false;
     int menu_value{},which_icon_index{},which_actions_index{};
     std::vector<QHBoxLayout*>sub_layouts;
     std::vector<QWidgetAction* >menu_popup_actions;
@@ -70,7 +68,7 @@ int main(int argc, char *argv[])
         qDebug() << "Nie mozna otworzyc pliku stylu.";
     }
     EventFilter *filter = new EventFilter;
-    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(show); 
+    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(); 
     
 
     mainWindow.installEventFilter(filter);
@@ -165,7 +163,7 @@ int main(int argc, char *argv[])
         which_actions_index++;
     }
 
-    Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow,show);
+    Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
     animationSpecialWidget->setVisible(false);
     SpecialButton* UpMenuButton = new SpecialButton(&mainWindow);
     UpMenuButton->setObjectName("taskBarMenu");
@@ -174,7 +172,6 @@ int main(int argc, char *argv[])
     animationSpecialWidget->setObjectName("animationWidgetTop");
 
     QWidget* Settings = new QWidget(&mainWindow);
-    //Settings->setFixedSize(317,70);
     Settings->setObjectName("animationWidgetBottom");
     Settings->setGraphicsEffect(nextEffect);
     QPushButton* DownMenuButton = new QPushButton(QIcon("src/ikony/main_app/Settings.png"),"   Ustawienia",Settings);
@@ -195,18 +192,14 @@ int main(int argc, char *argv[])
     QRect thirdStartSize(QRect(0, mainWindow.height()-70, 0, 70));
     QRect thirdEndSize(QRect(0, mainWindow.height()-70, 317, 70));
 
-    //Settings->setGeometry(0,mainWindow.height()-70,0,0);
-
     specialFilter->setValues(UpMenuButton,DownMenuButton);
     specialFilter->setWidgets(animationSpecialWidget,Settings);
-    //specialFilter->setBool(show);
     menu->setMinimumHeight(0);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
         pos.setY(pos.y());
         QRect startSize(pos, QSize(0, menu->sizeHint().height()));
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
-        std::cout << Settings->minimumHeight() << std::endl;
         if(Settings->minimumHeight()==0)
         {
             menu->installEventFilter(specialFilter);
@@ -242,22 +235,11 @@ int main(int argc, char *argv[])
             UpMenuButton->style()->polish(UpMenuButton);
             menu->removeEventFilter(specialFilter);
 
-            animation->setDuration(50);
-            animation->setStartValue(endSize);
-            animation->setEndValue(startSize);
-
-            animation2->setDuration(50);
-            animation2->setStartValue(secondEndSize); // Rozmiar początkowy
-            animation2->setEndValue(secondStartSize);
-
             Settings->setMinimumHeight(0);
             animationSpecialWidget->hide();
             Settings->hide();
             menu->hide();
-            
-            
         }
-       
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);
