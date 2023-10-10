@@ -32,10 +32,6 @@ QToolButton:hover{
     background-color:#d7d7d7;
     border-radius:10px;
 }
-#mainWindow
-{
-    color:black;
-}
 #menu_actions
 {
     border:none;
@@ -113,6 +109,48 @@ QPushButton#Deactivated
     text-align: center;
     margin: 4px;
 }
+QScrollBar:vertical {
+    background: transparent;
+    width: 10px;
+    margin: 10px 7px 10px 0px;
+}
+QScrollBar::handle:vertical {
+    min-height: 0px;
+    border-radius: 2px;
+    background-color: rgb(128, 128, 128);
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::add-page:vertical {
+    background: rgb(231, 231, 231); /* Tło obszaru add-page */
+}
+QScrollBar::sub-page:vertical {
+    background: rgb(231, 231, 231); /* Tło obszaru sub-page */
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
+QListWidget
+{
+    border: none;
+    background-color: rgb(231,231,231);
+}
+QListWidget::item
+{
+    border:none;
+    text-align: left;
+    background-color: rgb(231,231,231);
+    padding:7px;
+    margin-bottom: 7px;
+    font-size: 18px;
+    font-weight: lighter;
+} 
+QListWidget#Default::item:hover
+{
+    background-color:rgb(224,224,224);;
+}
+QListWidget#Label::item:hover
+{
+    background-color:none;
+}
+
 
 
 

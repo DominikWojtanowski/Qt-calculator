@@ -18,10 +18,8 @@ bool MenuButtonEventFilter::eventFilter(QObject* obj, QEvent* event)
 {   
     //qDebug() << event->type();
     if(event->type() == QEvent::MouseButtonDblClick)
-    {
         if(widgets[1]->minimumHeight()!=0)
             widgets[1]->setMinimumHeight(0);
-    }
     if(event->type() == QEvent::Hide)
     {
         wasChangedTop = false;

@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
     std::string label_texts[]{"Kalkulator","Konwerter"};
     
     QApplication app(argc, argv);
+    
     app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
     QWidget mainWindow;
     QString styleSheetPath("css/qstyle.css");
@@ -189,9 +190,6 @@ int main(int argc, char *argv[])
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
-    QRect thirdStartSize(QRect(0, mainWindow.height()-70, 0, 70));
-    QRect thirdEndSize(QRect(0, mainWindow.height()-70, 317, 70));
-
     specialFilter->setValues(UpMenuButton,DownMenuButton);
     specialFilter->setWidgets(animationSpecialWidget,Settings);
     menu->setMinimumHeight(0);
@@ -202,6 +200,8 @@ int main(int argc, char *argv[])
         QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
         if(Settings->minimumHeight()==0)
         {
+            QRect thirdStartSize(QRect(0, mainWindow.height()-70, 0, 70));
+            QRect thirdEndSize(QRect(0, mainWindow.height()-70, 317, 70));
             menu->installEventFilter(specialFilter);
             animationSpecialWidget->setVisible(true);
             Settings->setVisible(true);
