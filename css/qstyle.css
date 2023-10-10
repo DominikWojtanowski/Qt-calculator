@@ -44,8 +44,9 @@ QToolButton:hover{
 }
 #animationWidgetTop
 {
-    background-color:rgb(231,231,231);
+    background-color: rgb(231,231,231);
     border-top-right-radius: 17px;
+    border-bottom: 0px;
 }
 #animationWidgetBottom
 {
@@ -113,6 +114,10 @@ QScrollBar:vertical {
     background: transparent;
     width: 10px;
     margin: 10px 7px 10px 0px;
+}
+QScrollBar::handle:horizontal
+{
+    width: 0px;
 }
 QScrollBar::handle:vertical {
     min-height: 0px;

@@ -21,6 +21,7 @@ std::pair<std::string, std::string> make_string_pair(const std::string& value1,c
 
 int main(int argc, char *argv[])
 {
+    bool isLabel{false};
     int menu_value{},which_icon_index{},which_actions_index{};
     std::vector<QHBoxLayout*>sub_layouts;
     std::vector<QWidgetAction* >menu_popup_actions;
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
     std::vector<QWidget*>Widgets;
     std::vector<MenuAction*>actions;
     std::vector<std::vector<QPushButton*>>Widgets_buttons;
-    std::vector<std::vector<std::pair<std::string,std::string>>>menu_popup_labels_texts;
+    std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts;
     menu_popup_labels_texts.push_back(
     {
         {"src/ikony/pop_up_menu/calculator.png","   Standardowy"}, // nie wiem dlaczego nie moge dac string(" ",3)??
@@ -82,7 +83,11 @@ int main(int argc, char *argv[])
     QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect;
     shadowEffect->setBlurRadius(5); // Ustawienie promienia rozmycia cienia
     shadowEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
-    shadowEffect->setOffset(2, 7);
+    shadowEffect->setOffset(2, 5.5);
+    QGraphicsDropShadowEffect *listEffect = new QGraphicsDropShadowEffect;
+    listEffect->setBlurRadius(5); // Ustawienie promienia rozmycia cienia
+    listEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
+    listEffect->setOffset(2,5);
     QGraphicsDropShadowEffect* nextEffect = new QGraphicsDropShadowEffect();
     nextEffect->setBlurRadius(5); // Ustawienie promienia rozmycia cienia
     nextEffect->setColor(QColor(111, 111, 111,255)); // Ustawienie koloru cienia (RGBA)
@@ -137,32 +142,67 @@ int main(int argc, char *argv[])
     label->setContentsMargins(10,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
+    QListWidget listWidget(&mainWindow);
+    listWidget.setGraphicsEffect(listEffect);
+    //listWidget.setFixedSize(317,mainWindow.size().height()-128);
+    listWidget.setObjectName("Default");
+    listWidget.setVisible(false);
+    listWidget.hide();
+
+    for(int i = 0; i < sizeof(label_texts) / sizeof(label_texts[0]); i++)
+    {
+        QListWidgetItem* LabelItem = new QListWidgetItem(label_texts[i].c_str());
+        QFont font;
+        font.setBold(true);
+        font.setPixelSize(16);
+        LabelItem->setFont(font);
+        LabelItem->setForeground(QColor(88,88,88));
+        LabelItem->setTextAlignment(Qt::AlignLeft);
+        
+        listWidget.addItem(LabelItem);
+        for(int j = 0; j < menu_popup_labels_texts[i].size(); j++)
+        {
+            QListWidgetItem* item = new QListWidgetItem(QIcon(menu_popup_labels_texts[i][j].first),menu_popup_labels_texts[i][j].second);
+            QFont font;
+            font.setPixelSize(18);
+            font.setWeight(50);
+            item->setFont(font);
+            item->setTextAlignment(Qt::AlignLeft);
+            
+            listWidget.addItem(item);
+        }
+    }
+        
+    QObject::connect(&listWidget, &QListWidget::itemEntered, [&](QListWidgetItem *item) {
+        QString text = item->text();
+        if(text=="Kalkulator" || text=="Konwerter")
+        {
+            listWidget.style()->unpolish(&listWidget);
+            listWidget.setObjectName("Label");
+            listWidget.style()->polish(&listWidget);
+            isLabel = true;
+        }
+        else if(isLabel)
+        {
+            listWidget.style()->unpolish(&listWidget);
+            listWidget.setObjectName("Default");
+            listWidget.style()->polish(&listWidget);
+            isLabel = false;
+        }
+    });
+    
+    listWidget.setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    listWidget.verticalScrollBar()->setSingleStep(12);
+    listWidget.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    listWidget.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    listWidget.verticalScrollBar()->setContextMenuPolicy(Qt::NoContextMenu);
     
 
     QToolButton* toolbar_menu = new QToolButton();
-    QMenu* menu = new QMenu(/*toolbar_menu*/);
-    QWidgetAction* menu_label = new QWidgetAction(nullptr);
     toolbar_menu->setFixedSize(60,60);
     toolbar_menu->setObjectName("taskBarMenu");
     toolbar_menu->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
-    toolbar_menu->setMenu(menu);
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
-    
-    for(const auto& text : label_texts)
-    {
-        actions.push_back(new MenuAction(nullptr,"menu_actions"));
-        actions.back()->Create_label(text.c_str());
-        menu_popup_actions.push_back(actions.back());
-        menu->addAction(menu_popup_actions.back());
-        if(which_actions_index<menu_popup_labels_texts.size())
-            for(const auto& One_map : menu_popup_labels_texts.at(which_actions_index))
-            {
-                actions.push_back(new MenuAction(nullptr,"menu_actions"));
-                actions.back()->Create_button_with_icon(QIcon(One_map.first.c_str()),One_map.second.c_str(),One_map.second.c_str());
-                toolbar_menu->menu()->addAction(actions.back());
-            }
-        which_actions_index++;
-    }
 
     Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
     animationSpecialWidget->setVisible(false);
@@ -183,7 +223,7 @@ int main(int argc, char *argv[])
     
     //QVBoxLayout* menuLayout = new QVBoxLayout(&mainWindow); - jak skoncze podstawowy kalkulator to poprawie te szystkie layouty
 
-    QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(&listWidget, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
     QPropertyAnimation *animation3 = new QPropertyAnimation(Settings, "geometry");
 
@@ -192,19 +232,25 @@ int main(int argc, char *argv[])
 
     specialFilter->setValues(UpMenuButton,DownMenuButton);
     specialFilter->setWidgets(animationSpecialWidget,Settings);
-    menu->setMinimumHeight(0);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
-        pos.setY(pos.y());
-        QRect startSize(pos, QSize(0, menu->sizeHint().height()));
-        QRect endSize(QRect(pos, QSize(menu->sizeHint().width(), menu->sizeHint().height())));
+        pos.setX(pos.x()-9);
+        pos.setY(pos.y()-37);
+        QRect startSize(pos, QSize(0, mainWindow.size().height()-128));
+        QRect endSize(QRect(pos, QSize(317,mainWindow.size().height()-128)));
         if(Settings->minimumHeight()==0)
         {
+             UpMenuButton->style()->unpolish(UpMenuButton);
+            UpMenuButton->setObjectName("Deactivated");
+            UpMenuButton->style()->polish(UpMenuButton);
             QRect thirdStartSize(QRect(0, mainWindow.height()-70, 0, 70));
             QRect thirdEndSize(QRect(0, mainWindow.height()-70, 317, 70));
-            menu->installEventFilter(specialFilter);
+            //menu->installEventFilter(specialFilter);
             animationSpecialWidget->setVisible(true);
             Settings->setVisible(true);
+            listWidget.setVisible(true);
+            listWidget.raise();
+            Settings->raise();
 
             animation->setDuration(140);
             animation->setStartValue(startSize);
@@ -217,28 +263,27 @@ int main(int argc, char *argv[])
             animation3->setDuration(140);
             animation3->setStartValue(thirdStartSize); // Rozmiar początkowy
             animation3->setEndValue(thirdEndSize);
+            
 
 
-            menu->setFixedHeight(mainWindow.size().height()-128);
+            //listWidget.setFixedHeight(mainWindow.size().height()-128);
             Settings->setMinimumHeight(1);
             animation->start();
             animation2->start();
-            animation3->start();
-
-            menu->exec();
-            
+            animation3->start();            
         }
         else
         {
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
-            menu->removeEventFilter(specialFilter);
+            //menu->removeEventFilter(specialFilter);
 
+            
             Settings->setMinimumHeight(0);
             animationSpecialWidget->hide();
             Settings->hide();
-            menu->hide();
+            listWidget.setVisible(false);
         }
     });
     
