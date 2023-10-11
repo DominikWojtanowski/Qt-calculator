@@ -229,11 +229,8 @@ int main(int argc, char *argv[])
     specialFilter->setValues(UpMenuButton,DownMenuButton);
     specialFilter->setWidgets(animationSpecialWidget,Settings);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
-        QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
-        pos.setX(0);
-        pos.setY(60);
-        QRect startSize(pos, QSize(0, mainWindow.size().height()-148));
-        QRect endSize(QRect(pos, QSize(317,mainWindow.size().height()-128)));
+        QRect startSize(QPoint(0,60), QSize(0, mainWindow.size().height()-128));
+        QRect endSize(QPoint(0,60), QSize(317,mainWindow.size().height()-128));
         if(Settings->minimumHeight()==0)
         {
             UpMenuButton->style()->unpolish(UpMenuButton);
