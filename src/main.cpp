@@ -144,7 +144,6 @@ int main(int argc, char *argv[])
     
     QListWidget listWidget(&mainWindow);
     listWidget.setGraphicsEffect(listEffect);
-    //listWidget.setFixedSize(317,mainWindow.size().height()-128);
     listWidget.setObjectName("Default");
     listWidget.setVisible(false);
     listWidget.hide();
@@ -196,6 +195,7 @@ int main(int argc, char *argv[])
     listWidget.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     listWidget.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     listWidget.verticalScrollBar()->setContextMenuPolicy(Qt::NoContextMenu);
+    listWidget.setContextMenuPolicy(Qt::CustomContextMenu);
     
 
     QToolButton* toolbar_menu = new QToolButton();
@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
         QRect endSize(QRect(pos, QSize(317,mainWindow.size().height()-128)));
         if(Settings->minimumHeight()==0)
         {
-             UpMenuButton->style()->unpolish(UpMenuButton);
+            UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("Deactivated");
             UpMenuButton->style()->polish(UpMenuButton);
             QRect thirdStartSize(QRect(0, mainWindow.height()-70, 0, 70));
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
             Settings->setMinimumHeight(1);
             animation->start();
             animation2->start();
-            animation3->start();            
+            animation3->start(); 
         }
         else
         {
@@ -284,6 +284,7 @@ int main(int argc, char *argv[])
             animationSpecialWidget->hide();
             Settings->hide();
             listWidget.setVisible(false);
+            
         }
     });
     
@@ -295,6 +296,7 @@ int main(int argc, char *argv[])
         sub_layouts[0]->addWidget(Widgets_buttons[0][i]);
     }
     sub_layouts[1]->addWidget(Widgets_buttons.back().back()); // Nalepsza linijka mojego kodu xD
+    
     
     mainLayout->addWidget(splitter);
     masterLayout->addLayout(mainLayout);
