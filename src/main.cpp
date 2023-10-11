@@ -11,7 +11,6 @@
 #include "extra_classes/EventFilters/h/EventFilter.h"
 #include "extra_classes/EventFilters/h/MenuButtonEventFilter.h"
 #include "extra_classes/WidgetClasses/h/Shadow_Widget.h"
-#include "extra_classes/MenuClasses/h/MenuAction.h"
 #include "extra_classes/ButtonClasses/h/SpecialButton.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
@@ -27,7 +26,6 @@ int main(int argc, char *argv[])
     std::vector<QWidgetAction* >menu_popup_actions;
     std::vector<QLabel*>menu_popup_labels;
     std::vector<QWidget*>Widgets;
-    std::vector<MenuAction*>actions;
     std::vector<std::vector<QPushButton*>>Widgets_buttons;
     std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts;
     menu_popup_labels_texts.push_back(
@@ -220,8 +218,6 @@ int main(int argc, char *argv[])
     DownMenuButton->setFixedSize(317,70);
     DownMenuButton->show();
     Settings->setVisible(false);
-    
-    //QVBoxLayout* menuLayout = new QVBoxLayout(&mainWindow); - jak skoncze podstawowy kalkulator to poprawie te szystkie layouty
 
     QPropertyAnimation *animation = new QPropertyAnimation(&listWidget, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
@@ -234,9 +230,9 @@ int main(int argc, char *argv[])
     specialFilter->setWidgets(animationSpecialWidget,Settings);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QPoint pos = toolbar_menu->mapToGlobal(toolbar_menu->rect().bottomLeft());
-        pos.setX(pos.x()-9);
-        pos.setY(pos.y()-37);
-        QRect startSize(pos, QSize(0, mainWindow.size().height()-128));
+        pos.setX(0);
+        pos.setY(60);
+        QRect startSize(pos, QSize(0, mainWindow.size().height()-148));
         QRect endSize(QRect(pos, QSize(317,mainWindow.size().height()-128)));
         if(Settings->minimumHeight()==0)
         {
@@ -264,9 +260,6 @@ int main(int argc, char *argv[])
             animation3->setStartValue(thirdStartSize); // Rozmiar początkowy
             animation3->setEndValue(thirdEndSize);
             
-
-
-            //listWidget.setFixedHeight(mainWindow.size().height()-128);
             Settings->setMinimumHeight(1);
             animation->start();
             animation2->start();

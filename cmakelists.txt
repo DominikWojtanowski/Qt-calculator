@@ -13,10 +13,6 @@ set(CLASS_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/cpp/MenuButtonEventFilter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/MenuButtonEventFilter.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuClasses/cpp/MenuAction.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuClasses/h/MenuAction.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuClasses/cpp/MenuPushButton.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuClasses/h/MenuPushButton.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/cpp/Shadow_Widget.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/Shadow_Widget.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/cpp/SpecialButton.cpp
@@ -28,8 +24,6 @@ set(CLASS_SOURCE_FILES
 # Włącz mechanizm mocowania dla klasy MenuAction
 qt5_wrap_cpp(MOC_FILES
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
-${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuClasses/h/MenuAction.h
-${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/MenuClasses/h/MenuPushButton.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/SpecialButton.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/Shadow_Widget.h)
 
