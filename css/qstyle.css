@@ -27,6 +27,7 @@ body {
 #taskBarMenu:hover {
     background-color:#d7d7d7;
     border-radius:10px;
+    margin: 4px;
 }
 QToolButton:hover{
     background-color:#d7d7d7;
@@ -52,6 +53,12 @@ QToolButton:hover{
 {
     background-color:rgb(231,231,231);
     border-bottom-right-radius:17px;
+}
+QPushButton#animationWidgetBottom:hover
+{
+    background-color:#d7d7d7;
+    border-top-right-radius:13px;
+    border-bottom-right-radius:13px;
 }
 QPushButton#animationWidgetBottom, QPushButton#ActiveAnimationWidgetBottom, QPushButton#DeactiveAnimationWidgetBottom
 {

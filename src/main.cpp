@@ -121,8 +121,6 @@ int main(int argc, char *argv[])
     Widgets_buttons.push_back({new QPushButton("")});
 
     Widgets_buttons.push_back({new QPushButton("")});
-    filter->setValues(Widgets_buttons[1].back(),splitter);
-
     
     for(const auto& buttonArray : Widgets_buttons)
     {
@@ -219,6 +217,9 @@ int main(int argc, char *argv[])
     DownMenuButton->show();
     Settings->setVisible(false);
 
+    filter->setAnimationValues(animationSpecialWidget,Settings,&listWidget);
+    filter->setValues(Widgets_buttons[1].back(),splitter,UpMenuButton);
+
     QPropertyAnimation *animation = new QPropertyAnimation(&listWidget, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
     QPropertyAnimation *animation3 = new QPropertyAnimation(Settings, "geometry");
@@ -231,7 +232,7 @@ int main(int argc, char *argv[])
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QRect startSize(QPoint(0,60), QSize(0, mainWindow.size().height()-128));
         QRect endSize(QPoint(0,60), QSize(317,mainWindow.size().height()-128));
-        if(Settings->minimumHeight()==0)
+        if(!listWidget.isVisible())
         {
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("Deactivated");
@@ -260,10 +261,11 @@ int main(int argc, char *argv[])
             Settings->setMinimumHeight(1);
             animation->start();
             animation2->start();
-            animation3->start(); 
+            animation3->start();
         }
         else
         {
+            
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
@@ -274,7 +276,6 @@ int main(int argc, char *argv[])
             animationSpecialWidget->hide();
             Settings->hide();
             listWidget.setVisible(false);
-            
         }
     });
     
@@ -291,6 +292,8 @@ int main(int argc, char *argv[])
     mainLayout->addWidget(splitter);
     masterLayout->addLayout(mainLayout);
     mainWindow.show();  // Wyświetlenie głównego okna
+
+    
 
     return app.exec();  // Rozpoczęcie głównej pętli aplikacji
 }

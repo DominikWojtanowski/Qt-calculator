@@ -5,13 +5,23 @@ EventFilter::EventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1}
 
 bool EventFilter::eventFilter(QObject* obj, QEvent* event)
 {
+    
     if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
         if(m_splitter->count()==3)
             m_splitter->widget(2)->setFixedHeight(resizeEvent->size().height());
     }
+    if(event->type() == QEvent::WindowStateChange)
+        hideAll();
+    if(event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        if(mouseEvent->pos().x() > 317)
+            hideAll();
+    }
     if (event->type() == QEvent::Resize) {
+        hideAll();
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
         int newWidth = resizeEvent->size().width();
         if(newWidth>=705 && newWidth<=800 && m_splitter->count()==3)
@@ -46,10 +56,27 @@ bool EventFilter::eventFilter(QObject* obj, QEvent* event)
 }
 
 
-
-
-void EventFilter::setValues(QPushButton* button, QSplitter* splitter)
+void EventFilter::hideAll()
+{
+    if(animationList->isVisible())
+    {
+        m_menu_button->style()->unpolish(m_menu_button);
+        m_menu_button->setObjectName("taskBarMenu");
+        m_menu_button->style()->polish(m_menu_button);
+        animationList->hide();
+        animationsWidget2->hide();
+        animationsWidget->hide();
+    }
+}
+void EventFilter::setAnimationValues(QWidget* upAnimationWidget,QWidget* downAnimationWidget,QListWidget* listAnimation)
+{
+    animationsWidget = upAnimationWidget;
+    animationsWidget2 = downAnimationWidget;
+    animationList = listAnimation;
+}
+void EventFilter::setValues(QPushButton* button, QSplitter* splitter,QPushButton* menuButton)
 {
     m_history = button;
-    m_splitter=splitter;
+    m_splitter = splitter;
+    m_menu_button = menuButton;
 }
