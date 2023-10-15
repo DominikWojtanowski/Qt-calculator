@@ -5,7 +5,6 @@ EventFilter::EventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1}
 
 bool EventFilter::eventFilter(QObject* obj, QEvent* event)
 {
-    
     if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);

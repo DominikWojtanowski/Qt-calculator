@@ -11,8 +11,6 @@ add_executable(Kalkulator src/main.cpp ${app_icon_resource_windows})
 set(CLASS_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/cpp/EventFilter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/cpp/MenuButtonEventFilter.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/MenuButtonEventFilter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/cpp/Shadow_Widget.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/Shadow_Widget.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/cpp/SpecialButton.cpp

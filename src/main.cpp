@@ -9,7 +9,6 @@
 
 //MY CLASSES
 #include "extra_classes/EventFilters/h/EventFilter.h"
-#include "extra_classes/EventFilters/h/MenuButtonEventFilter.h"
 #include "extra_classes/WidgetClasses/h/Shadow_Widget.h"
 #include "extra_classes/ButtonClasses/h/SpecialButton.h"
 
@@ -68,7 +67,6 @@ int main(int argc, char *argv[])
         qDebug() << "Nie mozna otworzyc pliku stylu.";
     }
     EventFilter *filter = new EventFilter;
-    MenuButtonEventFilter* specialFilter = new MenuButtonEventFilter(); 
     
 
     mainWindow.installEventFilter(filter);
@@ -142,8 +140,9 @@ int main(int argc, char *argv[])
     listWidget.setGraphicsEffect(listEffect);
     listWidget.setObjectName("Default");
     listWidget.setVisible(false);
+    listWidget.setFocusPolicy(Qt::NoFocus);
     listWidget.hide();
-
+    
     for(int i = 0; i < sizeof(label_texts) / sizeof(label_texts[0]); i++)
     {
         QListWidgetItem* LabelItem = new QListWidgetItem(label_texts[i].c_str());
@@ -153,21 +152,32 @@ int main(int argc, char *argv[])
         LabelItem->setFont(font);
         LabelItem->setForeground(QColor(88,88,88));
         LabelItem->setTextAlignment(Qt::AlignLeft);
-        
         listWidget.addItem(LabelItem);
         for(int j = 0; j < menu_popup_labels_texts[i].size(); j++)
         {
-            QListWidgetItem* item = new QListWidgetItem(QIcon(menu_popup_labels_texts[i][j].first),menu_popup_labels_texts[i][j].second);
+            QListWidgetItem* item = new QListWidgetItem(menu_popup_labels_texts[i][j].second);
+            QIcon icon;
             QFont font;
+            icon.addPixmap(QPixmap(menu_popup_labels_texts[i][j].first), QIcon::Normal);
             font.setPixelSize(18);
             font.setWeight(50);
             item->setFont(font);
             item->setTextAlignment(Qt::AlignLeft);
-            
+            if(j==0 && i == 0)
+            {
+                item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+                icon.addPixmap(menu_popup_labels_texts[i][j].first,QIcon::Disabled);
+            }
+            icon.addPixmap(menu_popup_labels_texts[i][j].first,QIcon::Selected);
+            item->setIcon(icon);
             listWidget.addItem(item);
+            
         }
     }
+    QObject::connect(&listWidget, &QListWidget::itemClicked, [&](QListWidgetItem *item) {
+        QString text = item->text();
         
+    });
     QObject::connect(&listWidget, &QListWidget::itemEntered, [&](QListWidgetItem *item) {
         QString text = item->text();
         if(text=="Kalkulator" || text=="Konwerter")
@@ -185,6 +195,7 @@ int main(int argc, char *argv[])
             isLabel = false;
         }
     });
+    
     
     listWidget.setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     listWidget.verticalScrollBar()->setSingleStep(12);
@@ -227,8 +238,7 @@ int main(int argc, char *argv[])
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
-    specialFilter->setValues(UpMenuButton,DownMenuButton);
-    specialFilter->setWidgets(animationSpecialWidget,Settings);
+    
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QRect startSize(QPoint(0,60), QSize(0, mainWindow.size().height()-128));
         QRect endSize(QPoint(0,60), QSize(317,mainWindow.size().height()-128));
@@ -292,8 +302,6 @@ int main(int argc, char *argv[])
     mainLayout->addWidget(splitter);
     masterLayout->addLayout(mainLayout);
     mainWindow.show();  // Wyświetlenie głównego okna
-
-    
 
     return app.exec();  // Rozpoczęcie głównej pętli aplikacji
 }

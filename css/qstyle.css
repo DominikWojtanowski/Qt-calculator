@@ -153,10 +153,27 @@ QListWidget::item
     margin-bottom: 7px;
     font-size: 18px;
     font-weight: lighter;
-} 
+}
 QListWidget#Default::item:hover
 {
-    background-color:rgb(224,224,224);;
+    background-color: rgb(224, 224, 224);
+}
+QListWidget::item:selected {
+    background-color: transparent; 
+    color: rgb(88,88,88);
+    border: none; 
+    font-weight: lighter;
+} 
+QListWidget::item:disabled
+{
+    background-color: rgb(224, 224, 224); /* Zmiana koloru tła zaznaczonego elementu */
+    color: black; /* Kolor tekstu dla zaznaczonego elementu */
+    border: none;
+    margin-left: 5px;
+    padding-left: 10px;
+    background-image: url("src/ikony/main_app/scrollbar.png"); 
+    background-repeat: no-repeat; /* Nie powtarzaj tła */
+    background-position: left center; /* Pozycja obrazka po lewej stronie */
 }
 QListWidget#Label::item:hover
 {
