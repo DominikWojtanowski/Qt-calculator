@@ -1,20 +1,24 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Kalkulator)
+project("Qt_Calculator")
 
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 
 set(CMAKE_PREFIX_PATH "C:/dev/vcpkg/installed/x64-windows/include/qt5")
 set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/src/ikony/main_app/kalkulatoricon.png")
-add_executable(Kalkulator src/main.cpp ${app_icon_resource_windows})
+add_executable("Qt_Calculator" src/main.cpp ${app_icon_resource_windows})
 
 set(CLASS_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/cpp/EventFilter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Signals_Slots/Emitters/cpp/Emitter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Signals_Slots/Emitters/h/Emitter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/cpp/Shadow_Widget.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/Shadow_Widget.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/cpp/SpecialButton.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/SpecialButton.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/cpp/ButtonWithSlot.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/ButtonWithSlot.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Language/cpp/Language.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Language/h/Language.h
 )
@@ -22,12 +26,14 @@ set(CLASS_SOURCE_FILES
 # Włącz mechanizm mocowania dla klasy MenuAction
 qt5_wrap_cpp(MOC_FILES
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Signals_Slots/Emitters/h/Emitter.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/SpecialButton.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/ButtonWithSlot.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/Shadow_Widget.h)
 
-add_library(MyLibrary ${CLASS_SOURCE_FILES} ${MOC_FILES})
-target_include_directories(MyLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes)
-target_link_libraries(MyLibrary Qt5::Core Qt5::Widgets)
+add_library(QtCalculator ${CLASS_SOURCE_FILES} ${MOC_FILES})
+target_include_directories(QtCalculator PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes)
+target_link_libraries(QtCalculator Qt5::Core Qt5::Widgets)
 
-target_link_libraries(Kalkulator PRIVATE Qt5::Core Qt5::Widgets)
-target_link_libraries(Kalkulator PRIVATE MyLibrary)
+target_link_libraries("Qt_Calculator" PRIVATE Qt5::Core Qt5::Widgets)
+target_link_libraries("Qt_Calculator" PRIVATE QtCalculator)

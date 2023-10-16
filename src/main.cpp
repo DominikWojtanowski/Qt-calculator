@@ -11,6 +11,8 @@
 #include "extra_classes/EventFilters/h/EventFilter.h"
 #include "extra_classes/WidgetClasses/h/Shadow_Widget.h"
 #include "extra_classes/ButtonClasses/h/SpecialButton.h"
+#include "extra_classes/ButtonClasses/h/ButtonWithSlot.h"
+#include "extra_classes/Signals_Slots/Emitters/h/Emitter.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
@@ -67,6 +69,7 @@ int main(int argc, char *argv[])
         qDebug() << "Nie mozna otworzyc pliku stylu.";
     }
     EventFilter *filter = new EventFilter;
+    Emitter* emitter = new Emitter;
     
 
     mainWindow.installEventFilter(filter);
@@ -101,6 +104,9 @@ int main(int argc, char *argv[])
 
     QSplitter *splitter = new QSplitter(Qt::Horizontal, &mainWindow);
     splitter->setHandleWidth(1);
+    splitter->setChildrenCollapsible(false);
+    
+    
 
     //LEFT WIDGET
     Widgets.push_back(new QWidget());
@@ -116,15 +122,22 @@ int main(int argc, char *argv[])
         splitter->addWidget(Widget_one);
     }
     sub_layouts[1]->setAlignment(Qt::AlignRight);
-    Widgets_buttons.push_back({new QPushButton("")});
+    Widgets_buttons.push_back({new ButtonWithSlot("")});
 
-    Widgets_buttons.push_back({new QPushButton("")});
+    Widgets_buttons.push_back({new ButtonWithSlot("")});
+    
+    ButtonWithSlot* buttonWithSlot = dynamic_cast<ButtonWithSlot*>(Widgets_buttons.back().back());
+
+    QObject::connect(emitter, &Emitter::customSignal, buttonWithSlot, &ButtonWithSlot::customSlot);
     
     for(const auto& buttonArray : Widgets_buttons)
     {
         for(const auto& buttonArrayValue : buttonArray)
         {
-            buttonArrayValue->setIcon(QIcon(image_paths[which_icon_index++].c_str()));
+            QIcon icon;
+            icon.addPixmap(QPixmap(image_paths[which_icon_index].c_str()), QIcon::Normal);
+            icon.addPixmap(QPixmap(image_paths[which_icon_index++].c_str()), QIcon::Disabled);
+            buttonArrayValue->setIcon(icon);
             buttonArrayValue->setObjectName("taskBarMenu");
             buttonArrayValue->setFixedHeight(60);
             buttonArrayValue->setFixedWidth(60);
@@ -272,6 +285,7 @@ int main(int argc, char *argv[])
             animation->start();
             animation2->start();
             animation3->start();
+            emit emitter->customSignal(10);
         }
         else
         {
@@ -286,6 +300,7 @@ int main(int argc, char *argv[])
             animationSpecialWidget->hide();
             Settings->hide();
             listWidget.setVisible(false);
+            emit emitter->customSignal(0);
         }
     });
     
