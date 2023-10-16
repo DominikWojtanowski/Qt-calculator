@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     std::vector<QWidgetAction* >menu_popup_actions;
     std::vector<QLabel*>menu_popup_labels;
     std::vector<QWidget*>Widgets;
-    std::vector<std::vector<QPushButton*>>Widgets_buttons;
+    std::vector<std::vector<ButtonWithSlot*>>Widgets_buttons;
     std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts;
     menu_popup_labels_texts.push_back(
     {
@@ -125,10 +125,8 @@ int main(int argc, char *argv[])
     Widgets_buttons.push_back({new ButtonWithSlot("")});
 
     Widgets_buttons.push_back({new ButtonWithSlot("")});
-    
-    ButtonWithSlot* buttonWithSlot = dynamic_cast<ButtonWithSlot*>(Widgets_buttons.back().back());
 
-    QObject::connect(emitter, &Emitter::customSignal, buttonWithSlot, &ButtonWithSlot::customSlot);
+    QObject::connect(emitter, SIGNAL(customSignal(int)), Widgets_buttons.back().back(), SLOT(customSlot(int)));
     
     for(const auto& buttonArray : Widgets_buttons)
     {
@@ -242,7 +240,7 @@ int main(int argc, char *argv[])
     Settings->setVisible(false);
 
     filter->setAnimationValues(animationSpecialWidget,Settings,&listWidget);
-    filter->setValues(Widgets_buttons[1].back(),splitter,UpMenuButton);
+    filter->setValues(Widgets_buttons.back().back(),splitter,UpMenuButton);
 
     QPropertyAnimation *animation = new QPropertyAnimation(&listWidget, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");

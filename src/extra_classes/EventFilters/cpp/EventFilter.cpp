@@ -5,6 +5,7 @@ EventFilter::EventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1}
 
 bool EventFilter::eventFilter(QObject* obj, QEvent* event)
 {
+    qDebug() << event->type();
     if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
@@ -59,6 +60,8 @@ void EventFilter::hideAll()
 {
     if(animationList->isVisible())
     {
+        QObject::connect(emitter, SIGNAL(customSignal(int)), m_history, SLOT(customSlot(int)));
+        emit emitter->customSignal(0);
         m_menu_button->style()->unpolish(m_menu_button);
         m_menu_button->setObjectName("taskBarMenu");
         m_menu_button->style()->polish(m_menu_button);
@@ -73,7 +76,7 @@ void EventFilter::setAnimationValues(QWidget* upAnimationWidget,QWidget* downAni
     animationsWidget2 = downAnimationWidget;
     animationList = listAnimation;
 }
-void EventFilter::setValues(QPushButton* button, QSplitter* splitter,QPushButton* menuButton)
+void EventFilter::setValues(ButtonWithSlot* button, QSplitter* splitter,QPushButton* menuButton)
 {
     m_history = button;
     m_splitter = splitter;
