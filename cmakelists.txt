@@ -21,6 +21,10 @@ set(CLASS_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/ButtonWithSlot.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Language/cpp/Language.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Language/h/Language.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ListClasses/cpp/MenuList.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ListClasses/h/MenuList.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/cpp/MainWindow.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/MainWindow.h
 )
 
 # Włącz mechanizm mocowania dla klasy MenuAction
@@ -29,7 +33,9 @@ ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Signals_Slots/Emitters/h/Emitter.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/SpecialButton.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/ButtonWithSlot.h
-${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/Shadow_Widget.h)
+${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/Shadow_Widget.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/h/MainWindow.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ListClasses/h/MenuList.h)
 
 add_library(QtCalculator ${CLASS_SOURCE_FILES} ${MOC_FILES})
 target_include_directories(QtCalculator PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes)

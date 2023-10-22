@@ -11,7 +11,8 @@ class ButtonWithSlot : public QPushButton
     using QPushButton::QPushButton;
 private:
     bool isDisabled{false};
-    
+protected:
+    void mousePressEvent(QMouseEvent*) override;
 public slots:
     void customSlot(int);
 };

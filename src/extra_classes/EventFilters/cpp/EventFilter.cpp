@@ -5,7 +5,7 @@ EventFilter::EventFilter(QObject* parent) : QObject{parent}, m_previousWidth{-1}
 
 bool EventFilter::eventFilter(QObject* obj, QEvent* event)
 {
-    qDebug() << event->type();
+    //qDebug() << event->type();
     if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
@@ -16,6 +16,7 @@ bool EventFilter::eventFilter(QObject* obj, QEvent* event)
         hideAll();
     if(event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress)
     {
+        qDebug() << "test";
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
         if(mouseEvent->pos().x() > 317)
             hideAll();

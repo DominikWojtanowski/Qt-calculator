@@ -82,6 +82,7 @@
         "coroutine": "cpp",
         "resumable": "cpp",
         "qtwidgets": "cpp",
-        "qstyle": "cpp"
+        "qstyle": "cpp",
+        "qtcore": "cpp"
     }
 }

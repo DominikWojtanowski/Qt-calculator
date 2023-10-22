@@ -13,6 +13,8 @@
 #include "extra_classes/ButtonClasses/h/SpecialButton.h"
 #include "extra_classes/ButtonClasses/h/ButtonWithSlot.h"
 #include "extra_classes/Signals_Slots/Emitters/h/Emitter.h"
+#include "extra_classes/ListClasses/h/MenuList.h"
+#include "extra_classes/WidgetClasses/h/MainWindow.h"
 
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     
     app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
-    QWidget mainWindow;
+    MainWindow mainWindow;
     QString styleSheetPath("css/qstyle.css");
     QFile styleSheetFile(styleSheetPath);
     if (styleSheetFile.open(QFile::ReadOnly | QFile::Text)) {
@@ -72,7 +74,7 @@ int main(int argc, char *argv[])
     Emitter* emitter = new Emitter;
     
 
-    mainWindow.installEventFilter(filter);
+    //mainWindow.installEventFilter(filter);
     
     mainWindow.setGeometry(0,0,400,588);
     mainWindow.setMinimumHeight(588);
@@ -126,7 +128,12 @@ int main(int argc, char *argv[])
 
     Widgets_buttons.push_back({new ButtonWithSlot("")});
 
+    
+
     QObject::connect(emitter, SIGNAL(customSignal(int)), Widgets_buttons.back().back(), SLOT(customSlot(int)));
+    
+    
+    
     
     for(const auto& buttonArray : Widgets_buttons)
     {
@@ -147,7 +154,7 @@ int main(int argc, char *argv[])
     label->setContentsMargins(10,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
-    QListWidget listWidget(&mainWindow);
+    MenuList listWidget(&mainWindow);
     listWidget.setGraphicsEffect(listEffect);
     listWidget.setObjectName("Default");
     listWidget.setVisible(false);
