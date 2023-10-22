@@ -8,7 +8,6 @@
 #include "extra_classes/Language/h/Language.h"
 
 //MY CLASSES
-#include "extra_classes/EventFilters/h/EventFilter.h"
 #include "extra_classes/WidgetClasses/h/Shadow_Widget.h"
 #include "extra_classes/ButtonClasses/h/SpecialButton.h"
 #include "extra_classes/ButtonClasses/h/ButtonWithSlot.h"
@@ -70,7 +69,6 @@ int main(int argc, char *argv[])
     } else {
         qDebug() << "Nie mozna otworzyc pliku stylu.";
     }
-    EventFilter *filter = new EventFilter;
     Emitter* emitter = new Emitter;
     
 
@@ -246,8 +244,8 @@ int main(int argc, char *argv[])
     DownMenuButton->show();
     Settings->setVisible(false);
 
-    filter->setAnimationValues(animationSpecialWidget,Settings,&listWidget);
-    filter->setValues(Widgets_buttons.back().back(),splitter,UpMenuButton);
+    mainWindow.setAnimationValues(animationSpecialWidget,Settings,&listWidget);
+    mainWindow.setValues(Widgets_buttons.back().back(),splitter,UpMenuButton);
 
     QPropertyAnimation *animation = new QPropertyAnimation(&listWidget, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
@@ -291,10 +289,10 @@ int main(int argc, char *argv[])
             animation2->start();
             animation3->start();
             emit emitter->customSignal(10);
+            listWidget.installEventFilter(&listWidget);
         }
         else
         {
-            
             UpMenuButton->style()->unpolish(UpMenuButton);
             UpMenuButton->setObjectName("taskBarMenu");
             UpMenuButton->style()->polish(UpMenuButton);
@@ -306,6 +304,7 @@ int main(int argc, char *argv[])
             Settings->hide();
             listWidget.setVisible(false);
             emit emitter->customSignal(0);
+            listWidget.removeEventFilter(&listWidget);
         }
     });
     

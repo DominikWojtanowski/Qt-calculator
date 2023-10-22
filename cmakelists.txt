@@ -9,8 +9,6 @@ set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/src/ikony/main_app/ka
 add_executable("Qt_Calculator" src/main.cpp ${app_icon_resource_windows})
 
 set(CLASS_SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/cpp/EventFilter.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Signals_Slots/Emitters/cpp/Emitter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Signals_Slots/Emitters/h/Emitter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/WidgetClasses/cpp/Shadow_Widget.cpp
@@ -29,7 +27,6 @@ set(CLASS_SOURCE_FILES
 
 # Włącz mechanizm mocowania dla klasy MenuAction
 qt5_wrap_cpp(MOC_FILES
-${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/EventFilters/h/EventFilter.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/Signals_Slots/Emitters/h/Emitter.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/SpecialButton.h
 ${CMAKE_CURRENT_SOURCE_DIR}/src/extra_classes/ButtonClasses/h/ButtonWithSlot.h
