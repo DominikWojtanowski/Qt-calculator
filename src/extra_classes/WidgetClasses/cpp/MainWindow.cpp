@@ -19,7 +19,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
         if(m_splitter->count()==3)
             m_splitter->widget(2)->setFixedHeight(resizeEvent->size().height());
     }
-    if(event->type() == QEvent::WindowStateChange)
+    if(event->type() == QEvent::WindowStateChange || event->type() == QEvent::NonClientAreaMouseButtonDblClick || event->type() == QEvent::NonClientAreaMouseButtonPress)
         hideAll();
     if(event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress)
     {
