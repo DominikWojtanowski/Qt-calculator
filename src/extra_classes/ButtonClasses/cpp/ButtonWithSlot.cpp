@@ -9,5 +9,4 @@ void ButtonWithSlot::mousePressEvent(QMouseEvent* event)
     Q_UNUSED(event);
     QPushButton::mousePressEvent(event);
     setMouseTracking(true);
-    qDebug() << "cos";
 }

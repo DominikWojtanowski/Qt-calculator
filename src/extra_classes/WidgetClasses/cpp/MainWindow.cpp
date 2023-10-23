@@ -2,16 +2,17 @@
 
 
 MainWindow::MainWindow(QWidget* parent) : QWidget{parent}, m_previousWidth{-1}
-{}
+{
+    this->installEventFilter(this);
+}
 void MainWindow::hideSlot(int value)
 {
-    qDebug() << "test";
     QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, QPoint(328,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     this->eventFilter(nullptr,mouseEvent);
 }
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
-    //qDebug() << event->type();
+    qDebug() << event->type();
     if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
@@ -74,6 +75,7 @@ void MainWindow::hideAll()
         animationList->hide();
         animationsWidget2->hide();
         animationsWidget->hide();
+        animationList->removeEventFilter(animationList);
     }
 }
 void MainWindow::setAnimationValues(QWidget* upAnimationWidget,QWidget* downAnimationWidget,QListWidget* listAnimation)

@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
-    
+    listWidget.removeEventFilter(&listWidget);
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
         QRect startSize(QPoint(0,60), QSize(0, mainWindow.size().height()-128));
         QRect endSize(QPoint(0,60), QSize(317,mainWindow.size().height()-128));
