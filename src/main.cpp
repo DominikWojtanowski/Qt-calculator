@@ -30,36 +30,27 @@ int main(int argc, char *argv[])
     std::vector<QWidget*>Widgets;
     std::vector<std::vector<ButtonWithSlot*>>Widgets_buttons;
     std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts;
-    menu_popup_labels_texts.push_back(
-    {
-        {"src/ikony/pop_up_menu/calculator.png","   Standardowy"}, // nie wiem dlaczego nie moge dac string(" ",3)??
-        {"src/ikony/pop_up_menu/scientific.png","   Naukowy"},
-        {"src/ikony/pop_up_menu/graph.png","   Tworzenie wykresow"},
-        {"src/ikony/pop_up_menu/programming.png","   Programisty"},
-        {"src/ikony/pop_up_menu/calendar.png","   Obliczanie daty"},
-    });
-    menu_popup_labels_texts.push_back({
-        {"src/ikony/pop_up_menu/value.png","   Waluta"},
-        {"src/ikony/pop_up_menu/density.png","   Objętość"},
-        {"src/ikony/pop_up_menu/length.png","   Długość"},
-        {"src/ikony/pop_up_menu/weight.png","   Ciężar i masa"},  
-        {"src/ikony/pop_up_menu/temperature.png","   Temperatura"},  
-        {"src/ikony/pop_up_menu/energy.png","   Energia"},  
-        {"src/ikony/pop_up_menu/area.png","   Powierzchnia"},   
-        {"src/ikony/pop_up_menu/speed.png","   Prędkość"},   
-        {"src/ikony/pop_up_menu/time.png","   Czas"},   
-        {"src/ikony/pop_up_menu/energy.png","   Zasilanie"},
-        {"src/ikony/pop_up_menu/data.png","   Dane"}, 
-        {"src/ikony/pop_up_menu/cisnienie.png","   Ciśnienie"}, 
-        {"src/ikony/pop_up_menu/angle.png","   Kąt"},       
-    });
+
+    std::vector<std::vector<std::pair<QString, QString>>> single_language{Languages::getOneLanguage(Languages::getLanguage())};
+
+    single_language.clear();
+    Languages::setLanguage(Languages::languages::ENGLISH);
+    single_language = Languages::getOneLanguage(Languages::getLanguage());
+
+    menu_popup_labels_texts.push_back(single_language[1]);
+    menu_popup_labels_texts.push_back(single_language[2]);
+
+    QString label_texts[]{single_language[3].at(0).first,single_language[3].at(1).first};
+    
     std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
-    std::string label_texts[]{"Kalkulator","Konwerter"};
     
     QApplication app(argc, argv);
     
     app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
     MainWindow mainWindow;
+
+    
+
     QString styleSheetPath("css/qstyle.css");
     QFile styleSheetFile(styleSheetPath);
     if (styleSheetFile.open(QFile::ReadOnly | QFile::Text)) {
@@ -107,6 +98,8 @@ int main(int argc, char *argv[])
     splitter->setChildrenCollapsible(false);
     
     
+    
+    
 
     //LEFT WIDGET
     Widgets.push_back(new QWidget());
@@ -121,6 +114,7 @@ int main(int argc, char *argv[])
         sub_layouts.back()->setContentsMargins(0,0,0,0);
         splitter->addWidget(Widget_one);
     }
+    splitter->setCursor(Qt::ArrowCursor);
     sub_layouts[1]->setAlignment(Qt::AlignRight);
     Widgets_buttons.push_back({new ButtonWithSlot("")});
 
@@ -147,7 +141,7 @@ int main(int argc, char *argv[])
         }
     }
     
-    QLabel *label = new QLabel("Standardowy");
+    QLabel *label = new QLabel(single_language[0].at(0).first);
     label->setFixedSize(170,60);
     label->setContentsMargins(10,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
@@ -161,7 +155,7 @@ int main(int argc, char *argv[])
     
     for(int i = 0; i < sizeof(label_texts) / sizeof(label_texts[0]); i++)
     {
-        QListWidgetItem* LabelItem = new QListWidgetItem(label_texts[i].c_str());
+        QListWidgetItem* LabelItem = new QListWidgetItem(label_texts[i]);
         QFont font;
         font.setBold(true);
         font.setPixelSize(16);
@@ -196,7 +190,7 @@ int main(int argc, char *argv[])
     });
     QObject::connect(&listWidget, &QListWidget::itemEntered, [&](QListWidgetItem *item) {
         QString text = item->text();
-        if(text=="Kalkulator" || text=="Konwerter")
+        if(text==single_language[3].at(0).first || text==single_language[3].at(1).first)
         {
             listWidget.style()->unpolish(&listWidget);
             listWidget.setObjectName("Label");
@@ -238,7 +232,7 @@ int main(int argc, char *argv[])
     QWidget* Settings = new QWidget(&mainWindow);
     Settings->setObjectName("animationWidgetBottom");
     Settings->setGraphicsEffect(nextEffect);
-    QPushButton* DownMenuButton = new QPushButton(QIcon("src/ikony/main_app/Settings.png"),"   Ustawienia",Settings);
+    QPushButton* DownMenuButton = new QPushButton(QIcon("src/ikony/main_app/Settings.png"),single_language[0].at(0).second,Settings);
     DownMenuButton->setObjectName("animationWidgetBottom");
     DownMenuButton->setFixedSize(317,70);
     DownMenuButton->show();
