@@ -31,16 +31,26 @@ int main(int argc, char *argv[])
     std::vector<std::vector<ButtonWithSlot*>>Widgets_buttons;
     std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts;
 
+    Languages::setLanguage(Languages::languages::SPANISH);
+
     std::vector<std::vector<std::pair<QString, QString>>> single_language{Languages::getOneLanguage(Languages::getLanguage())};
 
-    single_language.clear();
-    Languages::setLanguage(Languages::languages::ENGLISH);
-    single_language = Languages::getOneLanguage(Languages::getLanguage());
+    std::vector<std::pair<QString, QString>>* descriptionZero = &single_language[0];
+    std::vector<std::pair<QString, QString>>* descriptionOne = &single_language[1];
+    std::vector<std::pair<QString, QString>>* descriptionTwo = &single_language[2];
+    std::vector<std::pair<QString, QString>>* descriptionThree = &single_language[3];
 
-    menu_popup_labels_texts.push_back(single_language[1]);
-    menu_popup_labels_texts.push_back(single_language[2]);
+   std::cout << descriptionZero << std::endl;
+   
 
-    QString label_texts[]{single_language[3].at(0).first,single_language[3].at(1).first};
+    
+    //single_language = Languages::getOneLanguage(Languages::getLanguage());
+    
+
+    menu_popup_labels_texts.push_back(*descriptionOne);
+    menu_popup_labels_texts.push_back(*descriptionTwo);
+
+    QString label_texts[]{(*descriptionThree).at(0).first,(*descriptionThree).at(1).first};
     
     std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
     
@@ -65,7 +75,6 @@ int main(int argc, char *argv[])
 
     //mainWindow.installEventFilter(filter);
     
-    mainWindow.setGeometry(0,0,400,588);
     mainWindow.setMinimumHeight(588);
     mainWindow.setMinimumWidth(400);
     mainWindow.setWindowTitle("Kalkulator Qt");
@@ -98,7 +107,8 @@ int main(int argc, char *argv[])
     splitter->setChildrenCollapsible(false);
     
     
-    
+    Languages::setLanguage(3);
+    single_language = Languages::getOneLanguage(Languages::getLanguage());
     
 
     //LEFT WIDGET
@@ -142,8 +152,9 @@ int main(int argc, char *argv[])
     }
     
     QLabel *label = new QLabel(single_language[0].at(0).first);
-    label->setFixedSize(170,60);
-    label->setContentsMargins(10,0,0,0);
+    label->setFixedSize(195,60);
+    label->setAlignment(Qt::AlignCenter);
+    label->setContentsMargins(60,0,0,0);
     label->setStyleSheet("font-size:21px;font-weight:500;");
     
     MenuList listWidget(&mainWindow);
@@ -176,9 +187,9 @@ int main(int argc, char *argv[])
             if(j==0 && i == 0)
             {
                 item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-                icon.addPixmap(menu_popup_labels_texts[i][j].first,QIcon::Disabled);
+                icon.addPixmap(QPixmap(menu_popup_labels_texts[i][j].first),QIcon::Disabled);
             }
-            icon.addPixmap(menu_popup_labels_texts[i][j].first,QIcon::Selected);
+            icon.addPixmap(QPixmap(menu_popup_labels_texts[i][j].first),QIcon::Selected);
             item->setIcon(icon);
             listWidget.addItem(item);
             
@@ -190,7 +201,7 @@ int main(int argc, char *argv[])
     });
     QObject::connect(&listWidget, &QListWidget::itemEntered, [&](QListWidgetItem *item) {
         QString text = item->text();
-        if(text==single_language[3].at(0).first || text==single_language[3].at(1).first)
+        if(text==label_texts[0] || text==label_texts[1])
         {
             listWidget.style()->unpolish(&listWidget);
             listWidget.setObjectName("Label");
@@ -216,10 +227,12 @@ int main(int argc, char *argv[])
     
 
     QToolButton* toolbar_menu = new QToolButton();
-    toolbar_menu->setFixedSize(60,60);
+    toolbar_menu->setContentsMargins(0,0,0,0);
+    toolbar_menu->setFixedSize(111,60);
     toolbar_menu->setObjectName("taskBarMenu");
     toolbar_menu->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
+    toolbar_menu->setVisible(false);
 
     Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
     animationSpecialWidget->setVisible(false);
@@ -248,10 +261,12 @@ int main(int argc, char *argv[])
     QRect secondStartSize(QRect(0, 0, 0, 60));
     QRect secondEndSize(QRect(0, 0, 317, 60));
 
-    listWidget.removeEventFilter(&listWidget);
+    
     QObject::connect(UpMenuButton,&QToolButton::clicked,UpMenuButton,[&](){
+        
         QRect startSize(QPoint(0,60), QSize(0, mainWindow.size().height()-128));
         QRect endSize(QPoint(0,60), QSize(317,mainWindow.size().height()-128));
+        
         if(!listWidget.isVisible())
         {
             UpMenuButton->style()->unpolish(UpMenuButton);
@@ -300,6 +315,7 @@ int main(int argc, char *argv[])
             emit emitter->customSignal(0);
             listWidget.removeEventFilter(&listWidget);
         }
+        
     });
     
     sub_layouts[0]->addWidget(toolbar_menu);

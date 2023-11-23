@@ -10,11 +10,12 @@ class MainWindow : public QWidget
     
 
 public slots:
-    void hideSlot(int);
+    void hideSlot(int,int);
 public:
     MainWindow(QWidget* = nullptr);
     void setValues(ButtonWithSlot*,QSplitter*,QPushButton*);
     void setAnimationValues(QWidget*, QWidget*, QListWidget*);
+    
 protected:
     bool eventFilter(QObject*, QEvent*) override;
 private:
@@ -26,7 +27,7 @@ private:
     ButtonWithSlot* m_history = nullptr;
     QSplitter* m_splitter = nullptr;
     Emitter* emitter = new Emitter;
-    void hideAll();
+    void hideAll(QMouseEvent*);
 };
 
 

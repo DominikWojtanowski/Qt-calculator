@@ -14,7 +14,7 @@ protected:
 private:
     MainWindow* mainWindow = nullptr; 
 signals:
-    void listHidden(int);
+    void listHidden(int,int);
 
 
 };

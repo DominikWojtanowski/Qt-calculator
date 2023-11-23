@@ -13,8 +13,8 @@ class Languages
 public:
     enum languages {
        ENGLISH,
-       GERMAN,
        SPANISH,
+       GERMAN,
        POLISH 
     };
     static void setLanguage(int);

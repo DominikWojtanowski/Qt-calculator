@@ -1,18 +1,19 @@
 #include "WidgetClasses/h/MainWindow.h"
 
 
+
 MainWindow::MainWindow(QWidget* parent) : QWidget{parent}, m_previousWidth{-1}
 {
     this->installEventFilter(this);
 }
-void MainWindow::hideSlot(int value)
+void MainWindow::hideSlot(int x,int y)
 {
-    QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, QPoint(328,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, QPoint(x,y), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
     this->eventFilter(nullptr,mouseEvent);
 }
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
-    qDebug() << event->type();
+    //qDebug() << event->type();
     if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
@@ -20,15 +21,15 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
             m_splitter->widget(2)->setFixedHeight(resizeEvent->size().height());
     }
     if(event->type() == QEvent::WindowStateChange || event->type() == QEvent::NonClientAreaMouseButtonDblClick || event->type() == QEvent::NonClientAreaMouseButtonPress)
-        hideAll();
+        hideAll(reinterpret_cast<QMouseEvent*>(event));
     if(event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress)
     {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
         if(mouseEvent->pos().x() > 317)
-            hideAll();
+            hideAll(reinterpret_cast<QMouseEvent*>(event));
     }
     if (event->type() == QEvent::Resize) {
-        hideAll();
+        hideAll(reinterpret_cast<QMouseEvent*>(event));
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
         int newWidth = resizeEvent->size().width();
         if(newWidth>=705 && newWidth<=800 && m_splitter->count()==3)
@@ -63,20 +64,27 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 }
 
 
-void MainWindow::hideAll()
+void MainWindow::hideAll(QMouseEvent* event)
 {
+    QPoint cursorPos = event->pos();
+
+    qDebug() << cursorPos.x() << cursorPos.y();
     if(animationList->isVisible())
     {
+        
         QObject::connect(emitter, SIGNAL(customSignal(int)), m_history, SLOT(customSlot(int)));
         emit emitter->customSignal(0);
         m_menu_button->style()->unpolish(m_menu_button);
         m_menu_button->setObjectName("taskBarMenu");
         m_menu_button->style()->polish(m_menu_button);
+        
         animationList->hide();
         animationsWidget2->hide();
         animationsWidget->hide();
-        animationList->removeEventFilter(animationList);
+        
+        
     }
+    
 }
 void MainWindow::setAnimationValues(QWidget* upAnimationWidget,QWidget* downAnimationWidget,QListWidget* listAnimation)
 {
