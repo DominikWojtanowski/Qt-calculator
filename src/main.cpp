@@ -15,6 +15,22 @@
 #include "extra_classes/ListClasses/h/MenuList.h"
 #include "extra_classes/WidgetClasses/h/MainWindow.h"
 
+
+QPixmap createCenteredIcon(const QIcon &icon, const QSize &targetSize) {
+    QPixmap pixmap(targetSize);
+    pixmap.fill(Qt::transparent);
+
+    QPixmap iconPixmap = icon.pixmap(targetSize.width(), targetSize.height());
+
+    QPainter painter(&pixmap);
+    int x = (targetSize.width() - iconPixmap.width()) / 2;
+    int y = (targetSize.height() - iconPixmap.height()) / 2;
+    painter.drawPixmap(x, y, iconPixmap);
+
+    return pixmap;
+}
+
+
 std::pair<std::string, std::string> make_string_pair(const std::string& value1,const std::string& value2)
 {
     return std::make_pair(value1,value2);
@@ -31,31 +47,34 @@ int main(int argc, char *argv[])
     std::vector<std::vector<ButtonWithSlot*>>Widgets_buttons;
     std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts;
 
-    Languages::setLanguage(Languages::languages::SPANISH);
+    
 
-    std::vector<std::vector<std::pair<QString, QString>>> single_language{Languages::getOneLanguage(Languages::getLanguage())};
+    Languages::setLanguage(Languages::languages::POLISH);
 
-    std::vector<std::pair<QString, QString>>* descriptionZero = &single_language[0];
-    std::vector<std::pair<QString, QString>>* descriptionOne = &single_language[1];
-    std::vector<std::pair<QString, QString>>* descriptionTwo = &single_language[2];
-    std::vector<std::pair<QString, QString>>* descriptionThree = &single_language[3];
+    
 
-   std::cout << descriptionZero << std::endl;
+    std::shared_ptr<std::vector<std::vector<std::pair<QString, QString>>>> languageData = Languages::getOneLanguage(Languages::getLanguage());
+    
    
+    Languages::setLanguage(2);
+    languageData = Languages::getOneLanguage(Languages::getLanguage());
 
+
+    
+    
     
     //single_language = Languages::getOneLanguage(Languages::getLanguage());
     
 
-    menu_popup_labels_texts.push_back(*descriptionOne);
-    menu_popup_labels_texts.push_back(*descriptionTwo);
+    menu_popup_labels_texts.push_back(languageData->at(1));
+    menu_popup_labels_texts.push_back(languageData->at(2));
 
-    QString label_texts[]{(*descriptionThree).at(0).first,(*descriptionThree).at(1).first};
+    QString label_texts[]{languageData->at(3).at(0).first,languageData->at(3).at(1).first};
     
     std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
     
-    QApplication app(argc, argv);
     
+    QApplication app(argc, argv);
     app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
     MainWindow mainWindow;
 
@@ -107,8 +126,8 @@ int main(int argc, char *argv[])
     splitter->setChildrenCollapsible(false);
     
     
-    Languages::setLanguage(3);
-    single_language = Languages::getOneLanguage(Languages::getLanguage());
+    //Languages::setLanguage(3);
+    //single_language = Languages::getOneLanguage(Languages::getLanguage());
     
 
     //LEFT WIDGET
@@ -151,7 +170,7 @@ int main(int argc, char *argv[])
         }
     }
     
-    QLabel *label = new QLabel(single_language[0].at(0).first);
+    QLabel *label = new QLabel(languageData->at(0).at(0).first);
     label->setFixedSize(195,60);
     label->setAlignment(Qt::AlignCenter);
     label->setContentsMargins(60,0,0,0);
@@ -179,7 +198,7 @@ int main(int argc, char *argv[])
             QListWidgetItem* item = new QListWidgetItem(menu_popup_labels_texts[i][j].second);
             QIcon icon;
             QFont font;
-            icon.addPixmap(QPixmap(menu_popup_labels_texts[i][j].first), QIcon::Normal);
+            icon.addPixmap(createCenteredIcon(QIcon(menu_popup_labels_texts[i][j].first),QSize(32,32)), QIcon::Normal);
             font.setPixelSize(18);
             font.setWeight(50);
             item->setFont(font);
@@ -224,15 +243,6 @@ int main(int argc, char *argv[])
     listWidget.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     listWidget.verticalScrollBar()->setContextMenuPolicy(Qt::NoContextMenu);
     listWidget.setContextMenuPolicy(Qt::CustomContextMenu);
-    
-
-    QToolButton* toolbar_menu = new QToolButton();
-    toolbar_menu->setContentsMargins(0,0,0,0);
-    toolbar_menu->setFixedSize(111,60);
-    toolbar_menu->setObjectName("taskBarMenu");
-    toolbar_menu->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
-    toolbar_menu->setStyleSheet("QToolButton::menu-indicator { subcontrol-origin: padding; subcontrol-position: bottom right; image: none; }");
-    toolbar_menu->setVisible(false);
 
     Shadow_Widget* animationSpecialWidget = new Shadow_Widget(shadowEffect,&mainWindow);
     animationSpecialWidget->setVisible(false);
@@ -245,7 +255,7 @@ int main(int argc, char *argv[])
     QWidget* Settings = new QWidget(&mainWindow);
     Settings->setObjectName("animationWidgetBottom");
     Settings->setGraphicsEffect(nextEffect);
-    QPushButton* DownMenuButton = new QPushButton(QIcon("src/ikony/main_app/Settings.png"),single_language[0].at(0).second,Settings);
+    QPushButton* DownMenuButton = new QPushButton(QIcon("src/ikony/main_app/Settings.png"),languageData->at(0).at(0).second,Settings);
     DownMenuButton->setObjectName("animationWidgetBottom");
     DownMenuButton->setFixedSize(317,70);
     DownMenuButton->show();
@@ -318,7 +328,6 @@ int main(int argc, char *argv[])
         
     });
     
-    sub_layouts[0]->addWidget(toolbar_menu);
     for(int i = 0; i < Widgets_buttons[0].size();i++)
     {
         if(i==Widgets_buttons[0].size()-1)
@@ -332,5 +341,11 @@ int main(int argc, char *argv[])
     masterLayout->addLayout(mainLayout);
     mainWindow.show();  // Wyświetlenie głównego okna
 
+    Languages::setLanguage(2);
+    languageData = Languages::getOneLanguage(Languages::getLanguage());
+
+    
+
+    
     return app.exec();  // Rozpoczęcie głównej pętli aplikacji
 }
