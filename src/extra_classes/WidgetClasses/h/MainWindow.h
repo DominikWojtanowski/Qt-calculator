@@ -13,7 +13,7 @@ public slots:
     void hideSlot(int,int);
 public:
     MainWindow(QWidget* = nullptr);
-    void setValues(ButtonWithSlot*,QSplitter*,QPushButton*);
+    void setValues(ButtonWithSlot*,QPushButton*);
     void setAnimationValues(QWidget*, QWidget*, QListWidget*);
     
 protected:
@@ -25,7 +25,6 @@ private:
     QListWidget* animationList = nullptr;
     QPushButton* m_menu_button = nullptr;
     ButtonWithSlot* m_history = nullptr;
-    QSplitter* m_splitter = nullptr;
     Emitter* emitter = new Emitter;
     void hideAll(QMouseEvent*);
 };

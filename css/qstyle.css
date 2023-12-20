@@ -26,13 +26,13 @@ body {
 }
 #taskBarMenu:hover {
     background-color:#d7d7d7;
-    border-radius:10px;
+    border-radius:7px;
     margin: 4px;
 }
 
 QToolButton:hover{
     background-color:#d7d7d7;
-    border-radius:10px;
+    border-radius:7px;
 }
 #menu_actions
 {

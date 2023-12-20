@@ -45,26 +45,14 @@ int main(int argc, char *argv[])
     std::vector<QLabel*>menu_popup_labels;
     std::vector<QWidget*>Widgets;
     std::vector<std::vector<ButtonWithSlot*>>Widgets_buttons;
-    std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts;
-
-    
-
+    std::vector<std::vector<std::pair<QString,QString>>>menu_popup_labels_texts{};
     Languages::setLanguage(Languages::languages::POLISH);
-
-    
 
     std::shared_ptr<std::vector<std::vector<std::pair<QString, QString>>>> languageData = Languages::getOneLanguage(Languages::getLanguage());
     
    
-    Languages::setLanguage(2);
+    Languages::setLanguage(Languages::languages::POLISH);
     languageData = Languages::getOneLanguage(Languages::getLanguage());
-
-
-    
-    
-    
-    //single_language = Languages::getOneLanguage(Languages::getLanguage());
-    
 
     menu_popup_labels_texts.push_back(languageData->at(1));
     menu_popup_labels_texts.push_back(languageData->at(2));
@@ -73,12 +61,9 @@ int main(int argc, char *argv[])
     
     std::string image_paths[]{"src/ikony/main_app/leave_on_top.png","src/ikony/main_app/history.png"};
     
-    
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon("src/ikony/main_app/kalkulatoricon.png"));
     MainWindow mainWindow;
-
-    
 
     QString styleSheetPath("css/qstyle.css");
     QFile styleSheetFile(styleSheetPath);
@@ -149,13 +134,8 @@ int main(int argc, char *argv[])
 
     Widgets_buttons.push_back({new ButtonWithSlot("")});
 
-    
-
     QObject::connect(emitter, SIGNAL(customSignal(int)), Widgets_buttons.back().back(), SLOT(customSlot(int)));
-    
-    
-    
-    
+
     for(const auto& buttonArray : Widgets_buttons)
     {
         for(const auto& buttonArrayValue : buttonArray)
@@ -169,12 +149,17 @@ int main(int argc, char *argv[])
             buttonArrayValue->setFixedWidth(60);
         }
     }
-    
+    Widgets_buttons[0][0]->setFixedSize(45,45);
+    Widgets_buttons[0][0]->setIcon(Widgets_buttons[0][0]->icon().pixmap(18,18).scaled(18, 18, Qt::IgnoreAspectRatio));
+    Widgets_buttons[0][0]->setContentsMargins(0,20,0,0);
+
+    Widgets_buttons.back().back()->setFixedSize(48,48);
+
     QLabel *label = new QLabel(languageData->at(0).at(0).first);
-    label->setFixedSize(195,60);
-    label->setAlignment(Qt::AlignCenter);
-    label->setContentsMargins(60,0,0,0);
-    label->setStyleSheet("font-size:21px;font-weight:500;");
+    label->setFixedSize(200,60);
+    label->setAlignment(Qt::AlignLeft);
+    label->setContentsMargins(60,15,0,0);
+    label->setStyleSheet("font-size:24px;");
     
     MenuList listWidget(&mainWindow);
     listWidget.setGraphicsEffect(listEffect);
@@ -248,7 +233,8 @@ int main(int argc, char *argv[])
     animationSpecialWidget->setVisible(false);
     SpecialButton* UpMenuButton = new SpecialButton(&mainWindow);
     UpMenuButton->setObjectName("taskBarMenu");
-    UpMenuButton->setFixedSize(60,60);
+    UpMenuButton->setStyleSheet("margin-top:7px;");
+    UpMenuButton->setFixedSize(55,57);
     UpMenuButton->setIcon(QIcon("src/ikony/main_app/menu_icon.png"));
     animationSpecialWidget->setObjectName("animationWidgetTop");
 
@@ -262,7 +248,7 @@ int main(int argc, char *argv[])
     Settings->setVisible(false);
 
     mainWindow.setAnimationValues(animationSpecialWidget,Settings,&listWidget);
-    mainWindow.setValues(Widgets_buttons.back().back(),splitter,UpMenuButton);
+    mainWindow.setValues(Widgets_buttons.back().back(),UpMenuButton);
 
     QPropertyAnimation *animation = new QPropertyAnimation(&listWidget, "geometry");
     QPropertyAnimation *animation2 = new QPropertyAnimation(animationSpecialWidget, "geometry");
@@ -336,16 +322,9 @@ int main(int argc, char *argv[])
     }
     sub_layouts[1]->addWidget(Widgets_buttons.back().back()); // Nalepsza linijka mojego kodu xD
     
-    
     mainLayout->addWidget(splitter);
     masterLayout->addLayout(mainLayout);
     mainWindow.show();  // Wyświetlenie głównego okna
 
-    Languages::setLanguage(2);
-    languageData = Languages::getOneLanguage(Languages::getLanguage());
-
-    
-
-    
     return app.exec();  // Rozpoczęcie głównej pętli aplikacji
 }

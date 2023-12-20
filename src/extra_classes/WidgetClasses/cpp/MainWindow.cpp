@@ -14,12 +14,12 @@ void MainWindow::hideSlot(int x,int y)
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
     //qDebug() << event->type();
-    if(event->type() == QEvent::WindowStateChange)
+    /*if(event->type() == QEvent::WindowStateChange)
     {
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
         if(m_splitter->count()==3)
             m_splitter->widget(2)->setFixedHeight(resizeEvent->size().height());
-    }
+    }*/
     if(event->type() == QEvent::WindowStateChange || event->type() == QEvent::NonClientAreaMouseButtonDblClick || event->type() == QEvent::NonClientAreaMouseButtonPress)
         hideAll(reinterpret_cast<QMouseEvent*>(event));
     if(event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress)
@@ -28,7 +28,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
         if(mouseEvent->pos().x() > 317)
             hideAll(reinterpret_cast<QMouseEvent*>(event));
     }
-    if (event->type() == QEvent::Resize) {
+    /*if (event->type() == QEvent::Resize) {
         hideAll(reinterpret_cast<QMouseEvent*>(event));
         QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
         int newWidth = resizeEvent->size().width();
@@ -59,7 +59,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
                 m_previousWidth = newWidth;     
             }
         }       
-    }
+    }*/
     return false;
 }
 
@@ -92,9 +92,8 @@ void MainWindow::setAnimationValues(QWidget* upAnimationWidget,QWidget* downAnim
     animationsWidget2 = downAnimationWidget;
     animationList = listAnimation;
 }
-void MainWindow::setValues(ButtonWithSlot* button, QSplitter* splitter,QPushButton* menuButton)
+void MainWindow::setValues(ButtonWithSlot* button,QPushButton* menuButton)
 {
     m_history = button;
-    m_splitter = splitter;
     m_menu_button = menuButton;
 }
